@@ -1,0 +1,12 @@
+#include <sys.types.h>
+#include <unisth.h>
+#include <stdio.h>
+
+int main(int argc, char *argv[])
+{
+
+	return 0;
+}
+
+
+

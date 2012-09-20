@@ -1,0 +1,3 @@
+ls -l:1 2:blank-file.txt:ls-output.txt
+cat myfile1 file2:none:blank-file.txt:cat-out.txt
+gzip:none:ls-output.txt:ls-output.txt.gz
