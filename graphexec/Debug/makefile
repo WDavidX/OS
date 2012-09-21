@@ -23,19 +23,19 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: asgn1
+all: graphexec
 
 # Tool invocations
-asgn1: $(OBJS) $(USER_OBJS)
+graphexec: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C Linker'
-	gcc  -o "asgn1" $(OBJS) $(USER_OBJS) $(LIBS)
+	gcc  -o "graphexec" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(OBJS)$(C_DEPS)$(EXECUTABLES) asgn1
+	-$(RM) $(OBJS)$(C_DEPS)$(EXECUTABLES) graphexec
 	-@echo ' '
 
 .PHONY: all clean dependents

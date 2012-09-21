@@ -17,6 +17,12 @@
 #include <fcntl.h>
 #include <errno.h>
 
+// for user defined macros
+#define DEFAULT_INPUT_FINE_NAME "some-graph-file.txt"
+#define READ_BUFFER_SIZE 512
+#define MAX_NUM_NODE 50
+#define MAX_CHILDREN_LIST_NUMBER 10
+
 //for ’status’ variable:
 #define INELIGIBLE 0
 #define READY 1
@@ -30,14 +36,10 @@ typedef struct node {
 	char output[1024]; // filenameorward
 	int children[10]; // children IDs
 	int num_children; // how many children this node has
+	int num_parent;   // how many parents this node has
+	int parentFinished; // how many parents have finished
 	pid_t pid; // track it when it’s running
 } node_t;
-
-// for user defied macros
-#define DEFAULT_INPUT_FINE_NAME "some-graph-file.txt"
-#define READ_BUFFER_SIZE 512
-#define MAX_NUM_NODE 50
-#define MAX_CHILDREN_LIST_NUMBER 10
 
 int makeargv(const char *s, const char *delimiters, char ***argvp);
 
@@ -63,17 +65,26 @@ int main(int argc, char *argv[]) {
 	} else {
 		printf("File open succeeded %s\n", inputfilename);
 	}
-
-	char*** childrenlist[MAX_CHILDREN_LIST_NUMBER];
 	node_t *nodes;
-	nodes = (node_t*) malloc(sizeof(node_t) * MAX_NUM_NODE);
-	int token_num, line_number = -1;
+	nodes = (node_t*) calloc(sizeof(node_t), MAX_NUM_NODE);
+	int token_num;
+	int line_number = -1;
 	char line_buffer[READ_BUFFER_SIZE];
-	char*** argvp;
+	char** argvp;
+	char** childrenlist;
 	while (fgets(line_buffer, sizeof(line_buffer), finput) != NULL) {
 		/* note that the newline is in the buffer */
-		printf("==========>%4d: \t%s", ++line_number, line_buffer);
-		token_num = makeargv(line_buffer, ":", &argvp);
+		if (line_buffer[strlen(line_buffer) - 1] == '\n') {
+			line_buffer[strlen(line_buffer) - 1] = '\0';
+		}
+		if (strcmp(line_buffer, "\0") == 0)
+			continue; //get rid of blank lines
+		printf("==========>%4d: \t%s\n", ++line_number, line_buffer);
+		token_num = makeargv(line_buffer, ":\n", &argvp);
+		if (token_num != 4) {
+			perror("Invalid number of input items");
+			exit(1);
+		}
 		nodes[line_number].id = line_number;
 		strcpy(nodes[line_number].prog, argvp[0]);
 		strcpy(nodes[line_number].input, argvp[2]);
@@ -83,26 +94,29 @@ int main(int argc, char *argv[]) {
 				nodes[line_number].id, nodes[line_number].prog,
 				nodes[line_number].input, nodes[line_number].output);
 
-		if (strcmp( argvp[1], "none") == 0) {
+		if (strcmp(argvp[1], "none") == 0) {
 			nodes[line_number].num_children = 0;
 			printf("NumChildNone: %d", nodes[line_number].num_children);
 		} else {
 			nodes[line_number].num_children = makeargv(argvp[1], " ",
 					&childrenlist);
-			printf(" |%s| ", argvp[1]);
+			printf("\t|%s|\t", argvp[1]);
 			printf("NumChild: %d\t Children: ",
 					nodes[line_number].num_children);
 			for (i = 0; i < nodes[line_number].num_children; ++i) {
 				nodes[line_number].children[i] = atoi(childrenlist[i]);
 				printf("%d ", nodes[line_number].children[i]);
-				printf("%s ", childrenlist[i]);
 			}
 		}
 		printf("\n");
 
 	}
+	fclose(finput);
 
-	printf("\n\nEnd of graphexec.\n");
+	for (i=0;i<line_number;++i){;
+
+	}
+	printf("\nEnd of graphexec.\n");
 	return 0;
 }
 
