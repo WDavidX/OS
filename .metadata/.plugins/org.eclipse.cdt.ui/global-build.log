@@ -1,0 +1,1119 @@
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:54:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:54:40: warning: comparison between pointer and integer [enabled by default]
+../src/testc.c:54:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:54:43: warning: comparison between pointer and integer [enabled by default]
+../src/testc.c:54:15: warning: assignment makes pointer from integer without a cast [enabled by default]
+../src/testc.c:61:14: error: ‘line’ undeclared (first use in this function)
+../src/testc.c:61:14: note: each undeclared identifier is reported only once for each function it appears in
+../src/testc.c:61:34: error: ‘fp’ undeclared (first use in this function)
+../src/testc.c:61:2: error: too many arguments to function ‘fgets’
+/usr/include/stdio.h:628:14: note: declared here
+../src/testc.c:61:37: error: expected ‘)’ before ‘{’ token
+../src/testc.c:66:1: error: expected expression before ‘}’ token
+../src/testc.c:66:1: warning: control reaches end of non-void function [-Wreturn-type]
+make: *** [src/testc.o] Error 1
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:54:43: warning: comparison between pointer and integer [enabled by default]
+../src/testc.c:54:15: warning: assignment makes pointer from integer without a cast [enabled by default]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:42: warning: comparison between pointer and integer [enabled by default]
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+../src/testc.c:61:2: warning: passing argument 1 of ‘printf’ makes pointer from integer without a cast [enabled by default]
+/usr/include/stdio.h:363:12: note: expected ‘const char * __restrict__’ but argument is of type ‘int’
+../src/testc.c:61:2: warning: format not a string literal and no format arguments [-Wformat-security]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+../src/testc.c:61:2: warning: passing argument 1 of ‘printf’ makes pointer from integer without a cast [enabled by default]
+Finished building: ../src/testc.c
+/usr/include/stdio.h:363:12: note: expected ‘const char * __restrict__’ but argument is of type ‘int’
+../src/testc.c:61:2: warning: format not a string literal and no format arguments [-Wformat-security]
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+../src/testc.c:61:2: warning: passing argument 1 of ‘printf’ makes pointer from integer without a cast [enabled by default]
+/usr/include/stdio.h:363:12: note: expected ‘const char * __restrict__’ but argument is of type ‘int’
+../src/testc.c:61:2: warning: format not a string literal and no format arguments [-Wformat-security]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+../src/testc.c:61:2: warning: passing argument 1 of ‘printf’ makes pointer from integer without a cast [enabled by default]
+/usr/include/stdio.h:363:12: note: expected ‘const char * __restrict__’ but argument is of type ‘int’
+../src/testc.c:61:2: warning: format not a string literal and no format arguments [-Wformat-security]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+../src/testc.c:61:2: warning: passing argument 1 of ‘printf’ makes pointer from integer without a cast [enabled by default]
+/usr/include/stdio.h:363:12: note: expected ‘const char * __restrict__’ but argument is of type ‘int’
+../src/testc.c:61:2: warning: format not a string literal and no format arguments [-Wformat-security]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+../src/testc.c:60:3: warning: too many arguments for format [-Wformat-extra-args]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+../src/testc.c:60:3: warning: too many arguments for format [-Wformat-extra-args]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+../src/testc.c:60:3: warning: too many arguments for format [-Wformat-extra-args]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+../src/testc.c:60:3: warning: format ‘%d’ expects argument of type ‘int’, but argument 2 has type ‘int *’ [-Wformat]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+../src/testc.c:60:15: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+../src/testc.c:59:15: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+../src/testc.c:61:15: warning: cast from pointer to integer of different size [-Wpointer-to-int-cast]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+../src/testc.c:62:6: warning: unused variable ‘line_number’ [-Wunused-variable]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+../src/testc.c:60:3: warning: format ‘%s’ expects a matching ‘char *’ argument [-Wformat]
+../src/testc.c:63:6: warning: unused variable ‘line_number’ [-Wunused-variable]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+../src/testc.c:62:6: warning: unused variable ‘line_number’ [-Wunused-variable]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+../src/testc.c:59:3: warning: format ‘%s’ expects argument of type ‘char *’, but argument 2 has type ‘int’ [-Wformat]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+../src/testc.c:62:6: warning: unused variable ‘line_number’ [-Wunused-variable]
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:55:14: warning: assignment makes pointer from integer without a cast [enabled by default]
+../src/testc.c:59:3: warning: format ‘%s’ expects argument of type ‘char *’, but argument 2 has type ‘int’ [-Wformat]
+../src/testc.c:62:6: warning: unused variable ‘line_number’ [-Wunused-variable]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:59:3: warning: format ‘%s’ expects argument of type ‘char *’, but argument 2 has type ‘int’ [-Wformat]
+../src/testc.c:62:6: warning: unused variable ‘line_number’ [-Wunused-variable]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c: In function ‘main’:
+../src/testc.c:62:6: warning: unused variable ‘line_number’ [-Wunused-variable]
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c:42:1: error: expected identifier or ‘(’ before ‘}’ token
+make: *** [src/testc.o] Error 1
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+../src/testc.c:42:1: error: expected identifier or ‘(’ before ‘}’ token
+make: *** [src/testc.o] Error 1
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project testc ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+Finished building: ../src/testc.c
+ 
+Building target: testc
+Invoking: GCC C Linker
+gcc  -o "testc"  ./src/testc.o   
+Finished building target: testc
+ 
+
+**** Build Finished ****
+
+**** Clean-only build of configuration Debug for project Asgn1 ****
+
+make clean 
+rm -rf  ./src/testc.o  ./src/testc.d  testc
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project Asgn1 ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+Finished building: ../src/testc.c
+ 
+Building target: Asgn1
+Invoking: GCC C Linker
+gcc  -o "Asgn1"  ./src/testc.o   
+Finished building target: Asgn1
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project Asgn1 ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Clean-only build of configuration Debug for project Asgn1 ****
+
+make clean 
+rm -rf  ./src/testc.o  ./src/testc.d  Asgn1
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project Asgn1 ****
+
+make all 
+Building file: ../src/testc.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/testc.d" -MT"src/testc.d" -o "src/testc.o" "../src/testc.c"
+Finished building: ../src/testc.c
+ 
+Building target: Asgn1
+Invoking: GCC C Linker
+gcc  -o "Asgn1"  ./src/testc.o   
+Finished building target: Asgn1
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project Asgn1 ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project Asgn1 ****
+
+make all 
+Building file: ../src/graphexec.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/graphexec.d" -MT"src/graphexec.d" -o "src/graphexec.o" "../src/graphexec.c"
+Finished building: ../src/graphexec.c
+ 
+Building target: Asgn1
+Invoking: GCC C Linker
+gcc  -o "Asgn1"  ./src/graphexec.o   
+Finished building target: Asgn1
+ 
+
+**** Build Finished ****
+
+**** Clean-only build of configuration Debug for project Asgn1 ****
+
+make clean 
+rm -rf  ./src/graphexec.o  ./src/graphexec.d  Asgn1
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project Asgn1 ****
+
+make all 
+Building file: ../src/graphexec.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/graphexec.d" -MT"src/graphexec.d" -o "src/graphexec.o" "../src/graphexec.c"
+Finished building: ../src/graphexec.c
+ 
+Building target: Asgn1
+Invoking: GCC C Linker
+gcc  -o "Asgn1"  ./src/graphexec.o   
+Finished building target: Asgn1
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project Asgn1 ****
+
+make all 
+Building target: Asgn1
+Invoking: GCC C Linker
+gcc  -o "Asgn1"   
+gcc: fatal error: no input files
+compilation terminated.
+make: *** [Asgn1] Error 4
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project asgn1 ****
+
+make all 
+Building file: ../src/graphexec.c
+Invoking: GCC C Compiler
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"src/graphexec.d" -MT"src/graphexec.d" -o "src/graphexec.o" "../src/graphexec.c"
+Finished building: ../src/graphexec.c
+ 
+Building target: asgn1
+Invoking: GCC C Linker
+gcc  -o "asgn1"  ./src/graphexec.o   
+Finished building target: asgn1
+ 
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project asgn1 ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
+
+**** Build of configuration Debug for project asgn1 ****
+
+make all 
+make: Nothing to be done for `all'.
+
+**** Build Finished ****
