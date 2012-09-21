@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Move 1 resources to &apos;asgn1&apos;" description="Move 1 resources to &apos;asgn1&apos;" destination="/asgn1" element1="/Asgn1/some-graph-file.txt" flags="7" id="org.eclipse.ltk.core.refactoring.move.resources" resources="1" stamp="1348219873110" updateReferences="true"/>
-</session>
