@@ -1,1 +1,1 @@
-src/graphexec.d: ../src/graphexec.c
+src/graphexec.d src/graphexec.o: ../src/graphexec.c

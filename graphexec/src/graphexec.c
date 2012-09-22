@@ -1,7 +1,7 @@
 /*
  ============================================================================
  Name        : graphexec.c
- Author      : 
+ Author      :
  Version     :
  Copyright   :
  Description :
@@ -36,7 +36,7 @@ typedef struct node {
 	char output[1024]; // filenameorward
 	int children[10]; // children IDs
 	int num_children; // how many children this node has
-	int num_parent;   // how many parents this node has
+	int num_parent; // how many parents this node has
 	int parentFinished; // how many parents have finished
 	pid_t pid; // track it when it’s running
 } node_t;
@@ -44,20 +44,22 @@ typedef struct node {
 int makeargv(const char *s, const char *delimiters, char ***argvp);
 
 int main(int argc, char *argv[]) {
+
+	int i, j;
+	node_t *nodes;
+	nodes = (node_t*) calloc(sizeof(node_t), MAX_NUM_NODE);
+	//int nodeNum=initilization(argc,&argv,&nodes)
 	printf("\nCSSI 4061 Asign1 graphexec starts\n");
-	int i;
 	for (i = 0; i < argc; ++i) {
 		printf("argv[%d]: %s\n", i, argv[i]);
 	}
 	char *inputfilename = DEFAULT_INPUT_FINE_NAME;
 	if (argc >= 2) {
-		free((void *) inputfilename);
 		inputfilename = argv[1];
 		printf("Entered input file name %s\n", inputfilename);
 	} else {
 		printf("Use default file name %s\n", inputfilename);
 	}
-
 	FILE* finput;
 	if (((finput = fopen(inputfilename, "r")) == 0)) {
 		perror("Invalid master input file");
@@ -65,8 +67,8 @@ int main(int argc, char *argv[]) {
 	} else {
 		printf("File open succeeded %s\n", inputfilename);
 	}
-	node_t *nodes;
-	nodes = (node_t*) calloc(sizeof(node_t), MAX_NUM_NODE);
+
+	// Reading the node connection info from the text file
 	int token_num;
 	int line_number = -1;
 	char line_buffer[READ_BUFFER_SIZE];
@@ -101,8 +103,7 @@ int main(int argc, char *argv[]) {
 			nodes[line_number].num_children = makeargv(argvp[1], " ",
 					&childrenlist);
 			printf("\t|%s|\t", argvp[1]);
-			printf("NumChild: %d\t Children: ",
-					nodes[line_number].num_children);
+			printf("NumChild: %d\t Children: ", nodes[line_number].num_children);
 			for (i = 0; i < nodes[line_number].num_children; ++i) {
 				nodes[line_number].children[i] = atoi(childrenlist[i]);
 				printf("%d ", nodes[line_number].children[i]);
@@ -113,13 +114,44 @@ int main(int argc, char *argv[]) {
 	}
 	fclose(finput);
 
-	for (i=0;i<line_number;++i){;
+	// INITILIZATION: get nodes with no parent and put them in a queue (FIFO)
+	for (i = 0; i < line_number; ++i) {
+		for (j = 0; j < nodes[i].num_children; ++j) {
+			nodes[nodes[i].children[j]].num_parent += 1;
+		}
+	}
+	for (i = 0; i <= line_number; ++i) {
+		printf("%d ", nodes[i].num_parent);
+	}
+	int first = 0, last = 0, processed = 0;
+	int queue[MAX_NUM_NODE];
+	memset(queue, 0, sizeof(int));
+	for (i = 0; i <= line_number; ++i) {
+		if (nodes[i].num_parent == 0) {
+			queue[last] = i;
+			++last;
+		}
+	}
 
+	// When first <=last, the processing queue is non-empty, proceed forking
+	int templast;	//temp the last element in order fire multiple processes
+	while (first<=last){
+		templast=last;
+		for (i=first;i<=templast;++i){
+			// 1 To fork new processes here and wait
+			// 2 Update children nodes parentFinished count
+			// 3 If parentFinished==num_parent, put the node to the queue
+			++first;  // remember to remove this
+		}
 	}
 	printf("\nEnd of graphexec.\n");
 	return 0;
 }
 
+
+void initilization(int argc, char *argv[]){}
+
+// parser a string into tokens according to delimiter given
 int makeargv(const char *s, const char *delimiters, char ***argvp) {
 	int error;
 	int i;
