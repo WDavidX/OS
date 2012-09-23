@@ -36,8 +36,9 @@ typedef struct node {
 	char output[1024]; // filenameorward
 	int children[10]; // children IDs
 	int num_children; // how many children this node has
-	int num_parent; // how many parents this node has
-	int parentFinished; // how many parents have finished
+	int num_parents; // how many parents this node has
+	int parentsFinished; // how many parents have finished
+    int status;
 	pid_t pid; // track it when it’s running
 } node_t;
 
@@ -70,24 +71,25 @@ int main(int argc, char *argv[]) {
 
 	// Reading the node connection info from the text file
 	int token_num;
-	int line_number = -1;
+	int line_number;
 	char line_buffer[READ_BUFFER_SIZE];
 	char** argvp;
 	char** childrenlist;
-	while (fgets(line_buffer, sizeof(line_buffer), finput) != NULL) {
+	for (line_number = 0; fgets(line_buffer, sizeof(line_buffer), finput) != NULL; line_number++) {
 		/* note that the newline is in the buffer */
 		if (line_buffer[strlen(line_buffer) - 1] == '\n') {
 			line_buffer[strlen(line_buffer) - 1] = '\0';
 		}
 		if (strcmp(line_buffer, "\0") == 0)
 			continue; //get rid of blank lines
-		printf("==========>%4d: \t%s\n", ++line_number, line_buffer);
+		//printf("==========>%4d: \t%s\n", line_number, line_buffer);
 		token_num = makeargv(line_buffer, ":\n", &argvp);
 		if (token_num != 4) {
 			perror("Invalid number of input items");
 			exit(1);
 		}
 		nodes[line_number].id = line_number;
+        nodes[line_number].status = INELIGIBLE;
 		strcpy(nodes[line_number].prog, argvp[0]);
 		strcpy(nodes[line_number].input, argvp[2]);
 		strcpy(nodes[line_number].output, argvp[3]);
@@ -98,11 +100,11 @@ int main(int argc, char *argv[]) {
 
 		if (strcmp(argvp[1], "none") == 0) {
 			nodes[line_number].num_children = 0;
-			printf("NumChildNone: %d", nodes[line_number].num_children);
+			printf("NumChild: %d", nodes[line_number].num_children);
 		} else {
 			nodes[line_number].num_children = makeargv(argvp[1], " ",
 					&childrenlist);
-			printf("\t|%s|\t", argvp[1]);
+			//printf("\t|%s|\t", argvp[1]);
 			printf("NumChild: %d\t Children: ", nodes[line_number].num_children);
 			for (i = 0; i < nodes[line_number].num_children; ++i) {
 				nodes[line_number].children[i] = atoi(childrenlist[i]);
@@ -115,33 +117,65 @@ int main(int argc, char *argv[]) {
 	fclose(finput);
 
 	// INITILIZATION: get nodes with no parent and put them in a queue (FIFO)
+	printf("\nCalculating inheritence\n");
 	for (i = 0; i < line_number; ++i) {
 		for (j = 0; j < nodes[i].num_children; ++j) {
-			nodes[nodes[i].children[j]].num_parent += 1;
-		}
-	}
-	for (i = 0; i <= line_number; ++i) {
-		printf("%d ", nodes[i].num_parent);
-	}
-	int first = 0, last = 0, processed = 0;
-	int queue[MAX_NUM_NODE];
-	memset(queue, 0, sizeof(int));
-	for (i = 0; i <= line_number; ++i) {
-		if (nodes[i].num_parent == 0) {
-			queue[last] = i;
-			++last;
+			nodes[nodes[i].children[j]].num_parents += 1;
 		}
 	}
 
-	// When first <=last, the processing queue is non-empty, proceed forking
-	int templast;	//temp the last element in order fire multiple processes
-	while (first<=last){
-		templast=last;
-		for (i=first;i<=templast;++i){
-			// 1 To fork new processes here and wait
-			// 2 Update children nodes parentFinished count
-			// 3 If parentFinished==num_parent, put the node to the queue
-			++first;  // remember to remove this
+	printf("\nBegin main execution\n");
+	int complete = 0;
+	while (complete < line_number) {
+		for (i = 0; i < line_number; ++i) {
+			if (nodes[i].status == INELIGIBLE) {
+				if (nodes[i].parentsFinished == nodes[i].num_parents) {
+					nodes[i].status = READY;
+					printf("Node %d is ready\n", i);
+				}
+			}
+			if (nodes[i].status == READY) {
+				printf("Forking node %d\n", i);
+				pid_t childpid = fork();
+				if (childpid == -1) {
+					perror("Failed to fork");
+					return 1;
+				}
+				else if (childpid == 0) {
+					char **argv;
+					int argcount = makeargv(nodes[i].prog, " ", &argv);
+					if (argcount == 0)
+					{
+						perror("No program name");
+						exit(1);
+					}
+					//**Set IO input and output redirection here**
+					printf("Executing %s\n", argv[0]);
+					execvp(argv[0], argv);
+					perror("Failed to execute");
+					exit(1);
+				}
+				else {
+					nodes[i].status = RUNNING;
+					nodes[i].pid = childpid;
+				}
+			}
+			if (nodes[i].status == RUNNING) {
+				int status;
+				int result = waitpid(nodes[i].pid, &status, WNOHANG);
+				if (result == -1) {
+					perror("Failed to get status");
+					exit(1);
+				}
+				else if (result != 0) {
+					nodes[i].status = FINISHED;
+					complete++;
+					for (j = 0; j < nodes[i].num_children; j++) {
+						nodes[nodes[i].children[j]].parentsFinished++;
+					}
+					printf("Node %d is complete\n", i);
+				}
+			}
 		}
 	}
 	printf("\nEnd of graphexec.\n");
