@@ -19,7 +19,7 @@
 
 // for user defined macros
 #define DEFAULT_INPUT_FINE_NAME "some-graph-file.txt"
-#define READ_BUFFER_SIZE 512
+#define READ_BUFFER_SIZE 1024
 #define MAX_NUM_NODE 50
 #define MAX_CHILDREN_LIST_NUMBER 10
 
