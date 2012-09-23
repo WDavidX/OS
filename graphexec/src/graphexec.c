@@ -22,6 +22,9 @@
 #define READ_BUFFER_SIZE 1024
 #define MAX_NUM_NODE 50
 #define MAX_CHILDREN_LIST_NUMBER 10
+#define INPUT_FLAGS O_RDONLY
+#define OUTPUT_FLAGS O_WRONLY | O_CREAT
+#define CREATE_FLAGS S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH
 
 //for ’status’ variable:
 #define INELIGIBLE 0
@@ -143,14 +146,35 @@ int main(int argc, char *argv[]) {
 				}
 				else if (childpid == 0) {
 					char **argv;
-					int argcount = makeargv(nodes[i].prog, " ", &argv);
+					int dup, argcount = makeargv(nodes[i].prog, " ", &argv);
 					if (argcount == 0)
 					{
 						perror("No program name");
 						exit(1);
 					}
-					//**Set IO input and output redirection here**
+
 					printf("Executing %s\n", argv[0]);
+					int finput, foutput;
+					if ((finput = open(nodes[i].input, INPUT_FLAGS)) == 0) {
+						perror("Invalid input file");
+						exit(1);
+					}
+					if (dup2(finput, STDIN_FILENO) == -1)
+					{
+						perror("Could not redirect stdin");
+						exit(1);
+					}
+
+					if ((foutput = open(nodes[i].output, OUTPUT_FLAGS, CREATE_FLAGS)) == 0) {
+						perror("Invalid output file");
+						exit(1);
+					}
+					if (dup2(foutput, STDOUT_FILENO) == -1)
+					{
+						perror("Could not redirect stdout");
+						exit(1);
+					}
+
 					execvp(argv[0], argv);
 					perror("Failed to execute");
 					exit(1);
@@ -186,6 +210,7 @@ int main(int argc, char *argv[]) {
 void initilization(int argc, char *argv[]){}
 
 // parser a string into tokens according to delimiter given
+// copied from Robbins and Robbins p. 37
 int makeargv(const char *s, const char *delimiters, char ***argvp) {
 	int error;
 	int i;
