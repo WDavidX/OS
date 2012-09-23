@@ -49,7 +49,7 @@ int main(int argc, char *argv[]) {
 	node_t *nodes;
 	nodes = (node_t*) calloc(sizeof(node_t), MAX_NUM_NODE);
 	//int nodeNum=initilization(argc,&argv,&nodes)
-	printf("\nCSSI 4061 Asign1 graphexec starts\n");
+	printf("\nCSSI 4061 Assign1 graphexec starts\n");
 	for (i = 0; i < argc; ++i) {
 		printf("argv[%d]: %s\n", i, argv[i]);
 	}
