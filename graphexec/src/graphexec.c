@@ -187,9 +187,8 @@ void execute(node_t *nodes, int count) {
 				}
 			}
 			if (nodes[i].status == RUNNING) {
-				int status;
 				// Check the if this process has finished
-				int result = waitpid(nodes[i].pid, &status, WNOHANG);
+				int result = waitpid(nodes[i].pid, NULL, WNOHANG);
 				if (result == -1) {
 					perror("Failed to get status");
 					exit(1);
@@ -220,7 +219,7 @@ void execute(node_t *nodes, int count) {
 void executeChild(node_t node) {
 	char **argv;
 	// Parse arguments
-	int dup, argcount = makeargv(node.prog, " ", &argv);
+	int argcount = makeargv(node.prog, " ", &argv);
 	if (argcount == 0)
 	{
 		perror("No program name");
