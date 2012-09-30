@@ -1,0 +1,45 @@
+#+Author: Aaron Schemitz(3891645), Weichao Xu (4284387)
+#+Title:  CSCI 4061 Intro. to Operating Systems Assignment 1 README
+#+OPTIONS: toc:nil
+
+
+* Program purpose
+This program excuts a set of shell commands according to prespecified order given in an input text file.
+
+* How to compile the program
+Before compiling the program in command line, firstly put the source file and makefile in the same directory.
+
+To compile the program
+
+make
+
+To clean up the directory
+
+make clean
+
+* How to use the program from the shell
+Before using the program, please make sure all related files are in the same directory.
+
+The excutable take the master input file as the only one argyment. It will verbose related information on stdout as being excuted.
+
+--> ./graphexec some-text-file.txt
+
+* What exactly your program does
+This program builds up a graph, which specified the excution order, according to the master input file. Each node in the graph is corresponding to a line in the put file and has associated redirected input and output file name. The directred edge specified the precedence order amongst all nodes.
+
+In the excution procedure, we linearly search all the nodes. Any node is in one of the following status: READY, RUNNING, FINISHED and INELIGIBLE.
+
+- When a child is running, which is determined by using waitpid with WNOHANG. That function tells IMMEDIATELY if a child (node) is still running or has existed.
+
+-	When a child finished excution, we updates its child node.
+
+-	When a child is ready, we excute the child. In this process, we implemeted a executeChild function. It firstly redirects the output and input using dup2 and then execute the given commands. Proper error message will be given if the child fails to execute.
+
+-	When a child is ineligible. we do nothing.
+
+The interation ends when the number of exuted nodes exceeds the total number of nodes in the graph.
+
+In addition, a helper function makeargv is used. It parses a string into tokens according to a given delimiter and is used repeatedly. We use the sample code from R&R textbook.
+
+* Sidenote:
+This README file is recommanded to be viewed in org-mode [[http://orgmode.org/]]

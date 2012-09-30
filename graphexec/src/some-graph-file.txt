@@ -1,0 +1,7 @@
+ls -l: 1 2:blank-file.txt:ls-output.txt
+cat myfile1 file2:none:blank-file.txt:cat-out.txt
+gzip:none:ls-output.txt:ls-output.txt.gz
+ls -l:4:blank.txt:ls-out.txt
+sleep 1:2:blank.txt:blank-out.txt
+quota -v:3:blank.txt:quota-out.txt
+sleep 1:3:blank.txt:blank-out.txt

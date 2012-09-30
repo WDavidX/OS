@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.internal.ide.dialogs.ProjectContentsLocationArea">
+		<item value="/home/d/o" key="OUTSIDE_LOCATION"/>
+	</section>
+	<section name="BasicNewProjectResourceWizard">
+	</section>
+	<section name="ExternalProjectImportWizard">
+		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
+		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
+	</section>
+	<section name="CleanDialogSettings">
+		<item value="490" key="DIALOG_WIDTH"/>
+		<item value="306" key="DIALOG_Y_ORIGIN"/>
+		<item value="376" key="DIALOG_HEIGHT"/>
+		<item value="718" key="DIALOG_X_ORIGIN"/>
+		<item value="false" key="TOGGLE_SELECTED"/>
+	</section>
+</section>

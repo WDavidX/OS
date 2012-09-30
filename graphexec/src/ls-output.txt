@@ -1,0 +1,15 @@
+total 56
+-rw-r--r-- 1 d d     0 Sep 23 04:23 blank-file.txt
+-rwxr-xr-x 1 d d     0 Sep 30 14:50 blank-out.txt
+-rw-r--r-- 1 d d     0 Sep 23 04:23 blank.txt
+-rwxr-xr-x 1 d d     0 Sep 30 14:50 cat-out.txt
+-rwxr-xr-x 1 d d 13778 Sep 30 16:46 graphexec
+-rw-r--r-- 1 d d  8094 Sep 30 16:46 graphexec.c
+-rwxr-xr-x 1 d d   494 Sep 30 14:50 ls-output.txt
+-rwxr-xr-x 1 d d   185 Sep 30 14:50 ls-output.txt.gz
+-rwxr-xr-x 1 d d   589 Sep 30 14:50 ls-out.txt
+-rw-r--r-- 1 d d    78 Sep 30 14:50 makefile
+-rwxr-xr-x 1 d d     0 Sep 30 14:50 quota-out.txt
+-rw-r--r-- 1 d d  2154 Sep 30 16:43 README
+-rw-r--r-- 1 d d  7592 Sep 30 16:43 README.html
+-rw-r--r-- 1 d d   262 Sep 30 14:50 some-graph-file.txt

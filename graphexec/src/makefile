@@ -1,4 +1,4 @@
 all: graphexec.c
-	gcc -o graphexec graphexec.c
+	gcc -O3 -Wall -o graphexec graphexec.c
 clean:
 	rm graphexec
