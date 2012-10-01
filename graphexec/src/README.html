@@ -173,28 +173,28 @@ The excutable take the master input file as the only one argyment. It will verbo
 <h2 id="sec-4"><span class="section-number-2">4</span> What exactly your program does</h2>
 <div class="outline-text-2" id="text-4">
 
-<p>This program builds up a graph, which specified the excution order, according to the master input file. Each node in the graph is corresponding to a line in the put file and has associated redirected input and output file name. The directred edge specified the precedence order amongst all nodes.
+<p>This program builds up a graph, which specifies the excution order according to the master input file. Each node in the graph is corresponds to a line in the input file and has associated redirected input and output file name.
 </p>
 <p>
-In the excution procedure, we linearly search all the nodes. Any node is in one of the following status: READY, RUNNING, FINISHED and INELIGIBLE.
+In the excution procedure, we linearly search all the nodes. Each node has one of the following status: READY, RUNNING, FINISHED and INELIGIBLE.
 </p>
 <ul>
 <li>When a child is running, which is determined by using waitpid with WNOHANG. That function tells IMMEDIATELY if a child (node) is still running or has existed.
 
 </li>
-<li>When a child finished excution, we updates its child node.
+<li>When a child finished excution, we update its child node.
 
 </li>
-<li>When a child is ready, we excute the child. In this process, we implemeted a executeChild function. It firstly redirects the output and input using dup2 and then execute the given commands. Proper error message will be given if the child fails to execute.
+<li>When a child is ready, we excute the child. For this, we implemented a executeChild function. First it redirects the output and input using dup2 and then executes the given commands. Proper error message will be given if the child fails to execute.
 
 </li>
-<li>When a child is ineligible. we do nothing.
+<li>When a child is ineligible, we do nothing.
 </li>
 </ul>
 
 
 <p>
-The interation ends when the number of exuted nodes exceeds the total number of nodes in the graph.
+The interation ends when the number of exuted nodes reaches the total number of nodes in the graph.
 </p>
 <p>
 In addition, a helper function makeargv is used. It parses a string into tokens according to a given delimiter and is used repeatedly. We use the sample code from R&amp;R textbook.
@@ -214,7 +214,7 @@ In addition, a helper function makeargv is used. It parses a string into tokens 
 
 <div id="postamble">
 <p class="date">Date: 2012-09-30T16:43-0500</p>
-<p class="author">Author: Aaron Schemitz(3891645), Weichao Xu (4284387)</p>
+<p class="author">Author: Aaron Schmitz(3891645), Weichao Xu (4284387)</p>
 <p class="creator"><a href="http://orgmode.org">Org</a> version 7.9.1 with <a href="http://www.gnu.org/software/emacs/">Emacs</a> version 23</p>
 <a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
 
