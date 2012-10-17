@@ -9,7 +9,7 @@
 extern int errno;
 
 
-/* 
+/*
  * Name:		uri_entered_cb
  * Input arguments:	'entry'-address bar where the url was entered
  *			'data'-auxiliary data sent along with the event
@@ -91,10 +91,10 @@ int wait_for_browsing_req(int fds[2], browser_window *b_window)
 
 		// Create a new requirement, read bytes from the proper FD.
 
-		
-		/* Use this code in the following case: 
+
+		/* Use this code in the following case:
 		// If read received no data && errno == EAGAIN - just process any pending events and move along.
-		
+
 			// No browsing request from 'controller' tab
 			// Hence process GTK+ window related function (non-blocking).
 			process_single_gtk_event();
@@ -102,15 +102,15 @@ int wait_for_browsing_req(int fds[2], browser_window *b_window)
 		// Data! Read what it is and fill in the proper request.
 
 
-			// There is a browsing request from the 
+			// There is a browsing request from the
 			// controller tab. Render the requested URL
 			// on current tab.
 
-			// Handle all request types of CREATE_TAB, NEW_URI_ENTERED, 
+			// Handle all request types of CREATE_TAB, NEW_URI_ENTERED,
 			// and TAB_KILLED; for example, with a switch.
 
 
-			// This processes any events left in the browser 
+			// This processes any events left in the browser
 			// and shuts down the window.  Use this to handle TAB_KILLED.
 			/*
 			case TAB_KILLED:
@@ -131,14 +131,14 @@ int wait_for_browsing_req(int fds[2], browser_window *b_window)
  * Output arguments:  	0 : Success
  *			-1: Otherwise
  * Function:		Router (/parent) process listens for request from
- *			'controller' tab and performs the required 
+ *			'controller' tab and performs the required
  *			functionality based on request code.
  */
 int wait_for_child_reqs(comm_channel* channel, int total_tabs, int actual_tab_cnt)
 {
 
 
-	// Continue listening for child requests 
+	// Continue listening for child requests
 	while(1)
 	{
 		// Set the read FD to noblock for all tabs; remember to check for error returns!
@@ -170,7 +170,7 @@ int wait_for_child_reqs(comm_channel* channel, int total_tabs, int actual_tab_cn
  *			redirects the request to the parent (/router) process
  *			which then creates a new child process for creating
  *			and managing this new tab.
- */ 
+ */
 // We also refer to this as "create_new_tab_cb" in Appendix C.
 void new_tab_created_cb(GtkButton *button, gpointer data)
 {
@@ -187,7 +187,7 @@ void new_tab_created_cb(GtkButton *button, gpointer data)
 
 	// Populate it with request type, CREATE_TAB, and tab index pulled from (browser_window*) data
 
-	
+
 	//Send the request to the parent (/router) process through the proper FD.
 
 }
@@ -206,7 +206,7 @@ void new_tab_created_cb(GtkButton *button, gpointer data)
 int create_proc_for_new_tab(comm_channel* channel, int tab_index, int actual_tab_cnt)
 {
 
-	// Create bi-directional pipes (hence 2 pipes) for 
+	// Create bi-directional pipes (hence 2 pipes) for
 	// communication between the parent and child process.
 	// Remember to error check.
 
@@ -216,12 +216,12 @@ int create_proc_for_new_tab(comm_channel* channel, int tab_index, int actual_tab
 	// The first new tab is CONTROLLER, but the rest are URL-RENDERING type.
 
 
-	/* 
+	/*
 	if ...
 	*/
 	// If this is the child process,
 
-		
+
 		//Child process should close unused pipes and launch
 		// a window for either CONTROLLER or URL-RENDERING tabs.
 
@@ -230,15 +230,15 @@ int create_proc_for_new_tab(comm_channel* channel, int tab_index, int actual_tab
 
 		// 'Tab 0' is the 'controller' tab. It is
 		// this tab which receives browsing requests
-		// from the user and redirects them to 
+		// from the user and redirects them to
 		// appropriate child tab via the parent.
 		if(tab_index == 0)
 		{
 			// Create the 'controller' tab
-			create_browser(CONTROLLER_TAB, 
+			create_browser(CONTROLLER_TAB,
 				tab_index,
-				G_CALLBACK(new_tab_created_cb), 
-				G_CALLBACK(uri_entered_cb), 
+				G_CALLBACK(new_tab_created_cb),
+				G_CALLBACK(uri_entered_cb),
 				&b_window,
 				channel[tab_index]);
 			// Display the 'controller' tab window.
@@ -263,10 +263,10 @@ int create_proc_for_new_tab(comm_channel* channel, int tab_index, int actual_tab
 		}
 
 		exit(0);
-	
+
 	/* else  // this is parent.
 	{
-		// Parent Process: close proper FDs and start 
+		// Parent Process: close proper FDs and start
 		// waiting for requests if the tab index is 0.
 
 
@@ -284,7 +284,7 @@ int create_proc_for_new_tab(comm_channel* channel, int tab_index, int actual_tab
 * functions responsible for such things as
 * waiting for a browsing request, waiting for child requests,
 * or create a process for a new tab.  We have provided
-* suggestions and signatures but you are free to modify the 
+* suggestions and signatures but you are free to modify the
 * given code, as long as it still works.
 */
 
