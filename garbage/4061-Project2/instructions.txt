@@ -1,0 +1,25 @@
+Following are the instructions to run the sample 'browser' executable:
+1. Load the 'webkit' module via 'module load soft/webkit'.  This may not be required on KH 4250 or 1260 machines.
+2. Set up the X-server.
+	a) Mechanism to set-up X server varies depending on the operating system
+	   from which you SSH into the CSELABS machine. 
+		i) Ubuntu (or other flavors of Unix): No need for any X-server setup.
+		   You can skip this step.
+		ii) Windows: Download and install 'xming' (http://sourceforge.net/projects/xming/).
+		   Then RUN the 'xming' prior to connecting the CSELABS machine where you
+		   intend to run the sample code.
+3. Enable X11 forwarding
+  	SSH on CSELABS machine enabling the X forwarding: If you are using command-line 
+	tool to SSH, then X11 forwarding can be enabled by specifying -X option. For
+	example, ssh -X username@machine.cselabs.umn.edu would enable X11 forwarding.
+	   
+	If however you are using Putty to ssh, X11 forwarding can be enabled by 
+	clicking and following 'Connection->SSH->X11' tab in the 'Category' Panel
+ 	of Putty. Then check-mark to enable X11 forwarding on the 'Options 
+ 	controlling SSH X11 forwarding' window.
+	 
+4. Execute 'browser' binary: Now you are ready to run the 'browser' binary. Running
+   it would open the browser window. Follow the assignment description thereafter
+   to run the browser.
+
+NOTE: Specified URL in the CONTROLLER window MUST begin with 'http://'.
