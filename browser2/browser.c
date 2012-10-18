@@ -1,4 +1,4 @@
-#include "wrapper.h"
+a#include "wrapper.h"
 #include <sys/types.h>
 #include <unistd.h>
 #include <sys/wait.h>
@@ -7,6 +7,13 @@
 #include <fcntl.h>
 #include <errno.h>
 extern int errno;
+
+
+void uri_entered_cb(GtkWidget* entry, gpointer data);
+int wait_for_browsing_req(int fds[2], browser_window *b_window);
+int wait_for_browsing_req(int fds[2], browser_window *b_window);
+int wait_for_child_reqs(comm_channel* channel, int total_tabs, int actual_tab_cnt);
+int create_proc_for_new_tab(comm_channel* channel, int tab_index, int actual_tab_cnt);
 
 
 /*
@@ -21,6 +28,8 @@ extern int errno;
  *			and sends the browsing request to the router(/parent)
  *			process.
  */
+
+
 void uri_entered_cb(GtkWidget* entry, gpointer data)
 {
 
@@ -291,7 +300,7 @@ int create_proc_for_new_tab(comm_channel* channel, int tab_index, int actual_tab
 int main()
 {
 
-
-	return 0;
+		printf("hi\n");
+		return 0;
 }
 

@@ -28,12 +28,11 @@ endif
 all:  $(SOURCES) $(OBJ)
 
 $(OBJ): browser.c wrapper.o
-	clear
 	$(CC) browser.c wrapper.o -L ${LIB} $(CFLAGS) $(LDFLAGS)  -o $(OBJ)
 
 wrapper.o: wrapper.c wrapper.h
 	@echo "\n==================== Compiling the wrapper ===================="
-	$(CC) wrapper.c wrapper.h -c -O2 -L ${LIB} $(CFLAGS) $(LDFLAGS) 
+	$(CC) wrapper.c wrapper.h -c -O2 -L ${LIB} $(CFLAGS) $(LDFLAGS)
 	@echo "==================== End compiling the wrapper ====================\n"
 
 clean:
