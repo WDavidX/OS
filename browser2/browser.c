@@ -1,4 +1,4 @@
-a#include "wrapper.h"
+#include "wrapper.h"
 #include <sys/types.h>
 #include <unistd.h>
 #include <sys/wait.h>
@@ -8,12 +8,23 @@ a#include "wrapper.h"
 #include <errno.h>
 extern int errno;
 
+#define MAX_TAB_NUM 200
 
 void uri_entered_cb(GtkWidget* entry, gpointer data);
 int wait_for_browsing_req(int fds[2], browser_window *b_window);
-int wait_for_browsing_req(int fds[2], browser_window *b_window);
 int wait_for_child_reqs(comm_channel* channel, int total_tabs, int actual_tab_cnt);
+void new_tab_created_cb(GtkButton *button, gpointer data);
 int create_proc_for_new_tab(comm_channel* channel, int tab_index, int actual_tab_cnt);
+
+int main()
+{
+		printf("Introduction to Operating System Project 2: browser. \n");
+
+
+
+		return 0;
+}
+
 
 
 /*
@@ -77,6 +88,7 @@ void uri_entered_cb(GtkWidget* entry, gpointer data)
  *			2). Listen for URL rendering requests from
  *			    'controller' tab.
  */
+
 int wait_for_browsing_req(int fds[2], browser_window *b_window)
 {
 
@@ -296,11 +308,4 @@ int create_proc_for_new_tab(comm_channel* channel, int tab_index, int actual_tab
 * suggestions and signatures but you are free to modify the
 * given code, as long as it still works.
 */
-
-int main()
-{
-
-		printf("hi\n");
-		return 0;
-}
 
