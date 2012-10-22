@@ -1,4 +1,4 @@
-a#include "wrapper.h"
+#include "wrapper.h"
 #include <sys/types.h>
 #include <unistd.h>
 #include <sys/wait.h>
@@ -7,7 +7,6 @@ a#include "wrapper.h"
 #include <fcntl.h>
 #include <errno.h>
 extern int errno;
-
 
 void uri_entered_cb(GtkWidget* entry, gpointer data);
 int wait_for_browsing_req(int fds[2], browser_window *b_window);
@@ -40,9 +39,9 @@ void uri_entered_cb(GtkWidget* entry, gpointer data)
 	// Get the tab index where the URL is to be rendered
 	int tab_index = query_tab_id_for_request(entry, data);
 	if(tab_index <= 0 || tab_index > 10){
-		// Fill in your error handling code here.
-
-
+		printf("Invalid tab index!\n");
+		//TODO close
+		return;
 	}
 
 	// Get the URL.
@@ -195,10 +194,15 @@ void new_tab_created_cb(GtkButton *button, gpointer data)
 	child_req_to_parent new_req;
 
 	// Populate it with request type, CREATE_TAB, and tab index pulled from (browser_window*) data
-
+	create_new_tab_req new_tab_req;
+	new_tab_req.tab_index = ((browser_window*)data)->tab_index;
+	child_request req;
+	req.new_tab_req = new_tab_req;
+	new_req.req = req;
+	new_req.type = CREATE_TAB;
 
 	//Send the request to the parent (/router) process through the proper FD.
-
+	write(channel.child_to_parent_fd[1], &new_req, sizeof(new_req));
 }
 
 /*
@@ -218,19 +222,25 @@ int create_proc_for_new_tab(comm_channel* channel, int tab_index, int actual_tab
 	// Create bi-directional pipes (hence 2 pipes) for
 	// communication between the parent and child process.
 	// Remember to error check.
-
-
+	if (pipe(channel[tab_index].parent_to_child_fd)) {
+		perror("Couldn't open pipe");
+		return -1;
+	}
+	if (pipe(channel[tab_index].child_to_parent_fd)) {
+		perror("Couldn't open pipe");
+		return -1;
+	}
 
 	// Create child process for managing the new tab; remember to check for errors!
 	// The first new tab is CONTROLLER, but the rest are URL-RENDERING type.
 
-
-	/*
-	if ...
-	*/
+	pid_t pid;
+	if (!(pid = fork()))
+	{
 	// If this is the child process,
 
-
+		close(channel[tab_index].parent_to_child_fd[0]);
+		close(channel[tab_index].parent_to_child_fd[1]);
 		//Child process should close unused pipes and launch
 		// a window for either CONTROLLER or URL-RENDERING tabs.
 
@@ -257,6 +267,18 @@ int create_proc_for_new_tab(comm_channel* channel, int tab_index, int actual_tab
 		}
 		else
 		{
+			//###################
+			create_browser(URL_RENDERING_TAB,
+				tab_index,
+				null,
+				null,
+				&b_window,
+				channel[tab_index]);
+			// Display the 'controller' tab window.
+			// Loop for events
+			show_browser();
+			//##################
+			
 			// Create the 'ordinary' tabs.
 			// These tabs render web-pages when
 			// user enters url in 'controller' tabs.
@@ -271,16 +293,21 @@ int create_proc_for_new_tab(comm_channel* channel, int tab_index, int actual_tab
 
 		}
 
+		close(channel[tab_index].child_to_parent_fd[0]);
+		close(channel[tab_index].child_to_parent_fd[1]);
 		exit(0);
-
-	/* else  // this is parent.
+	}
+	else  // this is parent.
 	{
 		// Parent Process: close proper FDs and start
 		// waiting for requests if the tab index is 0.
-
-
+		channel[tab_index].pid = pid;
+		close(channel[tab_index].child_to_parent_fd[0]);
+		close(channel[tab_index].child_to_parent_fd[1]);
+		wait_for_child_reqs(channel, actual_tab_cnt, actual_tab_cnt);
+		close(channel[tab_index].parent_to_child_fd[0]);
+		close(channel[tab_index].parent_to_child_fd[1]);
 	}
-	*/
 
 	return 0;
 }
@@ -299,8 +326,12 @@ int create_proc_for_new_tab(comm_channel* channel, int tab_index, int actual_tab
 
 int main()
 {
-
-		printf("hi\n");
-		return 0;
+	comm_channel channels[UNRECLAIMED_TAB_COUNTER];
+	int i;
+	for (i=0; i < UNRECLAIMED_TAB_COUNTER; i++) {
+		channels[i].inuse = false;
+	}
+	create_proc_for_new_tab(channels, 0, 0);
+	return 0;
 }
 

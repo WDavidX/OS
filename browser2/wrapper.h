@@ -23,6 +23,8 @@ void show_browser();
 // A set of pipes between parents and children
 typedef struct comm_channel
 {
+  pid_t		pid;
+  bool		inuse;
   int		parent_to_child_fd[2];
   int		child_to_parent_fd[2];
 }comm_channel;
