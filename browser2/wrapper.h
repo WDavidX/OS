@@ -25,6 +25,8 @@ typedef struct comm_channel
 {
   int		parent_to_child_fd[2];
   int		child_to_parent_fd[2];
+	pid_t pid;
+	int   inuse;
 }comm_channel;
 
 /* The GtkWidget and WebKitWebView are needed by GTK to load

@@ -6,21 +6,24 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <stdio.h>
 extern int errno;
 
-#define MAX_TAB_NUM 200
+/* #define MAX_TAB_NUM 200 */
 
-void uri_entered_cb(GtkWidget* entry, gpointer data);
 int wait_for_browsing_req(int fds[2], browser_window *b_window);
 int wait_for_child_reqs(comm_channel* channel, int total_tabs, int actual_tab_cnt);
+void uri_entered_cb(GtkWidget* entry, gpointer data);
 void new_tab_created_cb(GtkButton *button, gpointer data);
 int create_proc_for_new_tab(comm_channel* channel, int tab_index, int actual_tab_cnt);
 
 int main()
 {
-		printf("Introduction to Operating System Project 2: browser. \n");
+		printf("\nIntroduction to Operating System Project 2: browser. \n");
 
-
+		comm_channel channels[UNRECLAIMED_TAB_COUNTER];
+		int total_tab_count=0, actual_tab_count=0;
+		int create_pro_stat=create_proc_for_new_tab(channels,0,total_tab_count);
 
 		return 0;
 }
@@ -50,11 +53,15 @@ void uri_entered_cb(GtkWidget* entry, gpointer data)
 	browser_window* b_window = (browser_window*)data;
 	// Get the tab index where the URL is to be rendered
 	int tab_index = query_tab_id_for_request(entry, data);
-	if(tab_index <= 0 || tab_index > 10){
+	if(tab_index <= 0 || tab_index > UNRECLAIMED_TAB_COUNTER){
 		// Fill in your error handling code here.
-
-
+			fprintf(stderr,"URL tab index is ouf of range ([1,%d])\n",UNRECLAIMED_TAB_COUNTER);
+			perror("");
+			return;
 	}
+
+	// Get the channel
+	comm_channel channel = ((browser_window*)data)->channel;
 
 	// Get the URL.
 	char* uri = get_entered_uri(entry);
@@ -63,15 +70,18 @@ void uri_entered_cb(GtkWidget* entry, gpointer data)
 	child_req_to_parent req;
 
 	// Fill in your code here.
-
 	// enter req.type
+	req.type=NEW_URI_ENTERED;
 
 	// fill in 'render in tab' field
+	req.req.uri_req.render_in_tab=tab_index;
 
 	// fill in 'uri' field
-
+	/* req.req.uri_req.uri=*uri; */
+	strcpy(req.req.uri_req.uri, uri);
 
 	// Send the request through the proper FD.
+	write(channel.child_to_parent_fd[1],&req,sizeof(req));
 
 }
 
@@ -196,20 +206,28 @@ int wait_for_child_reqs(comm_channel* channel, int total_tabs, int actual_tab_cn
 void new_tab_created_cb(GtkButton *button, gpointer data)
 {
 
-	printf("this is PID = %x entering new tab created \n", getpid());
+	printf("this is PID = %d entering new tab created \n", getpid());
 	if(!data)
 		return;
 	comm_channel channel = ((browser_window*)data)->channel;
+	int new_tab_index = query_tab_id_for_request(NULL, data);
+
+	fprintf(stderr, "New tab index is %d",new_tab_index);
+	if (new_tab_index<1 || new_tab_index>UNRECLAIMED_TAB_COUNTER){
+			return;
+	}
 
 	// Append your code here.
 
 	// Create new request.
 	child_req_to_parent new_req;
-
 	// Populate it with request type, CREATE_TAB, and tab index pulled from (browser_window*) data
-
+	new_req.type=URL_RENDERING_TAB;
+	new_req.req.new_tab_req.tab_index=new_tab_index;
 
 	//Send the request to the parent (/router) process through the proper FD.
+	write(channel.child_to_parent_fd[1],&new_req,sizeof(new_req));
+
 
 }
 
@@ -231,17 +249,33 @@ int create_proc_for_new_tab(comm_channel* channel, int tab_index, int actual_tab
 	// communication between the parent and child process.
 	// Remember to error check.
 
+		if (-1==pipe(channel[tab_index].child_to_parent_fd))
+		{
+				fprintf(stderr,"Unable to create child to parent fd for tab %d",tab_index);
+				perror("");
+				exit(1);
+		}
 
-
+		if (-1==pipe(channel[tab_index].parent_to_child_fd))
+		{
+				fprintf(stderr,"Unable to create child to parent fd for tab %d",tab_index);
+				perror("");
+				exit(1);
+		}
 	// Create child process for managing the new tab; remember to check for errors!
 	// The first new tab is CONTROLLER, but the rest are URL-RENDERING type.
-
 
 	/*
 	if ...
 	*/
 	// If this is the child process,
 
+		pid_t pid=fork();
+		if (pid<=-1){
+				perror("Forking error");
+		}
+
+		if (pid==0){
 
 		//Child process should close unused pipes and launch
 		// a window for either CONTROLLER or URL-RENDERING tabs.
@@ -273,13 +307,25 @@ int create_proc_for_new_tab(comm_channel* channel, int tab_index, int actual_tab
 			// These tabs render web-pages when
 			// user enters url in 'controller' tabs.
 
+			create_browser(URL_RENDERING_TAB,
+				tab_index,
+				G_CALLBACK(new_tab_created_cb),
+				G_CALLBACK(uri_entered_cb),
+				&b_window,
+				channel[tab_index]);
 
-
+			show_browser();
 			// Wait for the browsing requests.
 			// User enters the url on the 'controller' tab
 			// which redirects the request to appropriate
 			// child tab via the parent-tab.
 
+
+		}
+
+		}else{
+				//parent process
+				channel[tab_index].pid=pid;
 
 		}
 
