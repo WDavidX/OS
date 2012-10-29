@@ -26,7 +26,6 @@ typedef struct comm_channel
   pid_t		pid;
   int		parent_to_child_fd[2];
   int		child_to_parent_fd[2];
-	pid_t pid;
 	int   inuse;
 }comm_channel;
 
