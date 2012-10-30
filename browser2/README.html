@@ -7,8 +7,8 @@
 <meta http-equiv="Content-Type" content="text/html;charset=iso-8859-1"/>
 <meta name="title" content="README"/>
 <meta name="generator" content="Org-mode"/>
-<meta name="generated" content="2012-10-28 21:38:51 Central Daylight Time"/>
-<meta name="author" content=""/>
+<meta name="generated" content="2012-10-29T21:40-0500"/>
+<meta name="author" content="xuxxx625"/>
 <meta name="description" content=""/>
 <meta name="keywords" content=""/>
 <style type="text/css">
@@ -61,6 +61,30 @@
   /*]]>*/-->
 </style>
 <script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012  Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
 <!--/*--><![CDATA[/*><!--*/
  function CodeHighlightOn(elem, id)
  {
@@ -111,7 +135,6 @@
 <li><a href="#sec-6-4">6.4 Broken pipe</a></li>
 </ul>
 </li>
-<li><a href="#sec-7">7 </a></li>
 </ul>
 </div>
 </div>
@@ -120,7 +143,7 @@
 <h2 id="sec-1"><span class="section-number-2">1</span> PURPOSE</h2>
 <div class="outline-text-2" id="text-1">
 
-<p>  The lab aims to deisgn a multi-process broswer program. It has a master controller tab in which the related management operatiions are performed, incuding creating a new tab, entering new URL address and specifiyng the website to be rendered in a given tab.
+<p>The lab 2 aims to deisgn a multi-process broswer program. It has a master controller tab in which the related management operatiions are performed, incuding creating a new tab, entering new URL address and specifiyng which tab will be used to render the URL. All websites are rendered by different processes in different windows.
 </p>
 </div>
 
@@ -130,7 +153,7 @@
 <h2 id="sec-2"><span class="section-number-2">2</span> Compiling</h2>
 <div class="outline-text-2" id="text-2">
 
-<p>Before compiling the the source code, please make sure the related libraries are installed on the host. For example, for Ubuntu, please install the libgtc, libwebkit and libwebkitgit libraries. The versions may vary somehow from systems to system.
+<p>Before compiling the the source code, please make sure the related libraries are installed on the host. For example, for Ubuntu, please install the libgtc, libwebkit and libwebkitgit libraries using apt-get. The versions may vary somehow from systems to systems. A sample compiling is performed on kh4250-01.
 </p>
 <p>
 To compile the source code, please enter
@@ -139,7 +162,7 @@ To compile the source code, please enter
 $ make
 </p>
 <p>
-Note: we modified the Makefile so that the wrapper.o can be compiled seperated, avoiding compiling it everytime.
+Note: we modified the Makefile so that the wrapper.o can be compiled seperately, avoiding duplicated compiling everytime.
 </p>
 </div>
 
@@ -149,7 +172,11 @@ Note: we modified the Makefile so that the wrapper.o can be compiled seperated, 
 <h2 id="sec-3"><span class="section-number-2">3</span> Running the extutable</h2>
 <div class="outline-text-2" id="text-3">
 
-
+<p>To run the excutable, please go to the corresponding directory and type
+</p>
+<p>
+$ ./brower
+</p>
 </div>
 
 </div>
@@ -158,7 +185,17 @@ Note: we modified the Makefile so that the wrapper.o can be compiled seperated, 
 <h2 id="sec-4"><span class="section-number-2">4</span> What exactly the program does</h2>
 <div class="outline-text-2" id="text-4">
 
-
+<p>The program has processes in three catagories: the rounter process, the controller tab process and some URL rendering tab processes. The latter two open window instances.
+</p>
+<p>
+Firstly, the router process forks a process with controller tab (with tab<sub>index</sub>=0) open after startup. Then it forks new process for URL rendering tab later during function calls. The router process polls all requests from its child and sends requests to child processes. All IPC in this project will involve the rounter process on one side.
+</p>
+<p>
+The controller tab process takes input from the user. When create-new-tab is clicked, it sends a CREATE<sub>TAB</sub> request to the router process. When the URL is entered with a tab index, the it sends a NEW<sub>URI</sub><sub>ENTERED</sub> to the rounter process. When close is clicked, it sends a TAB<sub>KILLED</sub> requst to the rounter.
+</p>
+<p>
+The URL rendering tab processes listen the requests from the router process. When the request is a TAB<sub>KILLED</sub> request, it kills itself. When the request is a NEW<sub>URI</sub><sub>ENTERED</sub> request, it renders a new URL, which is specified in the request, in itself.
+</p>
 </div>
 
 </div>
@@ -167,7 +204,10 @@ Note: we modified the Makefile so that the wrapper.o can be compiled seperated, 
 <h2 id="sec-5"><span class="section-number-2">5</span> Assumptions</h2>
 <div class="outline-text-2" id="text-5">
 
-
+<p>1 The max number of tabs will be defined in UNRECLAIMED<sub>TAB</sub><sub>COUNTER</sub>=10.
+2 The newly created tab will have tab<sub>index</sub> in ascending order.
+3 Once a tab is closed, it cannot be reused or recreated to render a website later.
+</p>
 </div>
 
 </div>
@@ -183,6 +223,8 @@ Note: we modified the Makefile so that the wrapper.o can be compiled seperated, 
 <h3 id="sec-6-1"><span class="section-number-3">6.1</span> Handling invalid tab index specification in CONTROLLER tab</h3>
 <div class="outline-text-3" id="text-6-1">
 
+<p>The tab index will be firstly examed in function uri<sub>entered</sub><sub>cb</sub>:  if(tab<sub>index</sub> &lt;= 0 || tab<sub>index</sub> &gt; UNRECLAIMED<sub>TAB</sub><sub>COUNTER</sub>){} . This check is performed immediately after the user hits the enter key. It will print an error message and return immediately if the tab index is invalid. Thus, the subsequence operations will be omitted. Specifically, no reqeust will be generated and sent to the router process.
+</p>
 
 </div>
 
@@ -192,7 +234,8 @@ Note: we modified the Makefile so that the wrapper.o can be compiled seperated, 
 <h3 id="sec-6-2"><span class="section-number-3">6.2</span> Closing the CONTROLLER tab</h3>
 <div class="outline-text-3" id="text-6-2">
 
-
+<p>When the close button is clicked, the CONTROLLER tab process generates a series of requests from total<sub>tabs</sub>-1 downto 0. Those reqeuests will be sent to the router which will send the killing command to all its children. All requests will be blocked. Therefore, an URL tab will be closed only after the previous killing request is successfully received by the rounter.
+</p>
 </div>
 
 </div>
@@ -201,6 +244,11 @@ Note: we modified the Makefile so that the wrapper.o can be compiled seperated, 
 <h3 id="sec-6-3"><span class="section-number-3">6.3</span> Error code returned by various system/wrapper-library calls</h3>
 <div class="outline-text-3" id="text-6-3">
 
+<p>Erroe code return by system calls are caught by the external variable errno. If the errno is EINTER, then the corresponding polling is skipped. In other cases, error messages will be printed with perror.
+</p>
+<p>
+Most of wrapper functions are void function thus there are no return values. The return values are generally omitted. When there is an error, the following operations are skipped.
+</p>
 
 </div>
 
@@ -210,24 +258,16 @@ Note: we modified the Makefile so that the wrapper.o can be compiled seperated, 
 <h3 id="sec-6-4"><span class="section-number-3">6.4</span> Broken pipe</h3>
 <div class="outline-text-3" id="text-6-4">
 
-
-</div>
-</div>
-
-</div>
-
-<div id="outline-container-7" class="outline-2">
-<h2 id="sec-7"><span class="section-number-2">7</span> </h2>
-<div class="outline-text-2" id="text-7">
-
+<p>During the thes phase, there is no broken pipe message printed. If the user tries to open a link in an invalid tab number, a message will be printed to the command line "Could not read from pipe: Bad fild descriptor".
+</p></div>
 </div>
 </div>
 </div>
 
 <div id="postamble">
-<p class="date">Date: 2012-10-28 21:38:51 Central Daylight Time</p>
-<p class="author">Author: </p>
-<p class="creator">Org version 7.8.11 with Emacs version 24</p>
+<p class="date">Date: 2012-10-29T21:40-0500</p>
+<p class="author">Author: xuxxx625</p>
+<p class="creator"><a href="http://orgmode.org">Org</a> version 7.9.2 with <a href="http://www.gnu.org/software/emacs/">Emacs</a> version 23</p>
 <a href="http://validator.w3.org/check?uri=referer">Validate XHTML 1.0</a>
 
 </div>

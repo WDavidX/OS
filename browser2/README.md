@@ -1,5 +1,5 @@
 * PURPOSE
-The lab 2 aims to deisgn a multi-process broswer program. It has a master controller tab in which the related management operatiions are performed, incuding creating a new tab, entering new URL address and specifiyng which tab will be used to render the URL.
+The lab 2 aims to deisgn a multi-process broswer program. It has a master controller tab in which the related management operatiions are performed, incuding creating a new tab, entering new URL address and specifiyng which tab will be used to render the URL. All websites are rendered by different processes in different windows.
 
 * Compiling
 Before compiling the the source code, please make sure the related libraries are installed on the host. For example, for Ubuntu, please install the libgtc, libwebkit and libwebkitgit libraries using apt-get. The versions may vary somehow from systems to systems. A sample compiling is performed on kh4250-01.
@@ -38,7 +38,10 @@ The tab index will be firstly examed in function uri_entered_cb: 	if(tab_index <
 When the close button is clicked, the CONTROLLER tab process generates a series of requests from total_tabs-1 downto 0. Those reqeuests will be sent to the router which will send the killing command to all its children. All requests will be blocked. Therefore, an URL tab will be closed only after the previous killing request is successfully received by the rounter.
 
 ** Error code returned by various system/wrapper-library calls
-//TODO
+Erroe code return by system calls are caught by the external variable errno. If the errno is EINTER, then the corresponding polling is skipped. In other cases, error messages will be printed with perror.
+
+Most of wrapper functions are void function thus there are no return values. The return values are generally omitted. When there is an error, the following operations are skipped.
+
 
 ** Broken pipe
-There will be no broken pipe message printed. If the user tries to open a link in an invalid tab number, a message will be printed to the command line "Could not read from pipe: Bad fild descriptor".
+During the thes phase, there is no broken pipe message printed. If the user tries to open a link in an invalid tab number, a message will be printed to the command line "Could not read from pipe: Bad fild descriptor".
