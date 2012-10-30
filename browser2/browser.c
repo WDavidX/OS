@@ -1,3 +1,9 @@
+/* CSci4061 F2012 Assignment
+* section: 3
+* date: 10/1/12
+* name: Aaron Schmitz, Weichao Xu
+* id: 3891645, 4284387
+*/
 #include "wrapper.h"
 #include <sys/types.h>
 #include <unistd.h>
