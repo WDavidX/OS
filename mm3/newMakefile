@@ -1,5 +1,0 @@
-all: mm_public.o
-	gcc public_tb.c mm_public.o -g -o public_tb
-
-mm_public.o:
-	gcc -g -c mm_public.c

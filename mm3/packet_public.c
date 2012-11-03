@@ -1,4 +1,4 @@
-#include "mm_public.h"
+//#include "mm_public.h"
 #include "packet_public.h"
 #include <string.h>
 
@@ -57,7 +57,7 @@ int main (int argc, char **argv)
 	/* set up alarm handler -- mask all signals within it */
 
 	/* turn on alarm timer ... use  INTERVAL and INTERVAL_USEC for sec and usec values */
-
+	int j;
 	message.num_packets = 0;
 	mm_init (&MM, 200);	
 	for (j=1; j<=NumMessages; j++) {
