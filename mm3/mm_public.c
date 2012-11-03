@@ -17,7 +17,10 @@ double comp_time (struct timeval times, struct timeval timee)
 
 /* Write these ... */
 int mm_init (mm_t *MM, int tsz){
-
+		MM=malloc(tsz);
+		if (MM==NULL)
+				return -1;
+		return 1;
 }
 
 void* mm_get (mm_t *MM, int neededSize) {
@@ -29,5 +32,10 @@ void mm_put (mm_t *MM, void *chunk) {
 }
 
 void mm_release (mm_t *MM) {
-	
+		if (MM==NULL){
+				fprintf(stderr,"Input point is NULL");
+
+				return;
+		}
+		free((void*) MM);
 }
