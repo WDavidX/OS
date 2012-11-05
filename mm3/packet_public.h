@@ -14,6 +14,7 @@ typedef struct {
 /* Keeps track of packets that have arrived for the message */
 typedef struct {
 	int num_packets;
-	void *data[MaxPackets];
+//	void *data[MaxPackets+1];
+	char* data;
 } message_t;
 

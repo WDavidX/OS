@@ -2,7 +2,7 @@
 #include "packet_public.h"
 #include <string.h>
 #include <signal.h>
-#include <unistd.h>
+//#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/time.h>
@@ -15,8 +15,9 @@ int pkt_total = 1; /* how many packets to be received for the message */
 int NumMessages = 5; /* number of messages we will receive */
 int cnt_msg = 1; /*current message being received*/
 
-#define TIMER_TV_USEC 100
+#define TIMER_TV_USEC 200000
 #define TIMER_TV_SEC 0
+#define PACKET_DATA_SIZE 8
 
 packet_t get_packet(int size);
 void packet_handler(int sig);
@@ -26,12 +27,12 @@ int main(int argc, char **argv) {
 
 	// Weichao's Question, do we need to put all signals within it?
 	// should we use static type here?
-	sigset_t new_set;
-	if ((sigemptyset(&new_set) == -1) || (sigfillset(&new_set) == -1)) {
+	sigset_t newset;
+	if ((sigemptyset(&newset) == -1) || (sigfillset(&newset) == -1)) {
 		perror("Failed to set up signal set to include all signals.\n");
 		exit(1);
 	} else {
-		if (sigprocmask(SIG_BLOCK, &new_set, NULL) == -1) {
+		if (sigprocmask(SIG_UNBLOCK, &newset, NULL) == -1) {
 			perror("Failed to block the incoming signals");
 			exit(1);
 		}
@@ -55,22 +56,28 @@ int main(int argc, char **argv) {
 
 	/* turn on alarm timer ... use  INTERVAL and INTERVAL_USEC for sec and usec values */
 	struct itimerval interval;
-	interval.it_value.tv_sec=TIMER_TV_SEC;
-	interval.it_value.tv_usec=TIMER_TV_USEC;
-	interval.it_interval.tv_sec=TIMER_TV_SEC;
-	interval.it_interval.tv_usec=TIMER_TV_USEC;
+	interval.it_value.tv_sec = TIMER_TV_SEC;
+	interval.it_value.tv_usec = TIMER_TV_USEC;
+	interval.it_interval.tv_sec = TIMER_TV_SEC;
+	interval.it_interval.tv_usec = TIMER_TV_USEC;
 	if (setitimer(ITIMER_REAL, &interval, NULL) == -1) {
-		fprintf(stderr, "Fail to set real-time timber to sec=%d, usec=%d: %s\n",
+		fprintf(stderr,
+				"Fail to set real-time timber to sec=%d, micro sec=%d: %s\n",
 				TIMER_TV_SEC, TIMER_TV_USEC, strerror(errno));
 		exit(1);
+	} else {
+		fprintf(stderr, "Real-time timber set to sec=%d, micro sec=%d.\n",
+				TIMER_TV_SEC, TIMER_TV_USEC);
 	}
 
-
+	// Real thing starts here
+	fprintf(stderr, "Starting packet_public \n");
 	int j;
 	message.num_packets = 0;
 	mm_init(&MM, 200);
 	for (j = 1; j <= NumMessages; j++) {
 		while (pkt_cnt < pkt_total)
+//			fprintf(stderr,"Starting while \n");
 			pause();
 
 		// reset these for next message
@@ -82,6 +89,8 @@ int main(int argc, char **argv) {
 
 	}
 	/* Deallocate memory manager */
+	mm_release(&MM);
+	fprintf(stderr, "Ending packet_public \n");
 }
 
 packet_t get_packet(int size) {
@@ -106,20 +115,42 @@ packet_t get_packet(int size) {
 
 void packet_handler(int sig) {
 	packet_t pkt;
-	fprintf(stderr, "IN PACKET HANDLER, sig=%d\n", sig);
+	fprintf(stderr, "IN PACKET HANDLER, sig=%d %s \t\t Message Packet %d\n",
+			sig, strsignal(sig), cnt_msg);
 
 	pkt = get_packet(cnt_msg); // the messages are of variable length. So, the 1st message consists of 1 packet, the 2nd message consists of 2 packets and so on..
 	pkt_total = pkt.how_many;
-	if (pkt_cnt == 0) { // when the 1st packet arrives, the size of the whole message is allocated.
 
+	if (pkt_cnt == 0) { // when the 1st packet arrives, the size of the whole message is allocated.
+		message.num_packets = pkt_total;
+		message.data = (char*) mm_get(&MM, message.num_packets*PACKET_DATA_SIZE + 1); // +1 for ending 0
+		fprintf (stderr,"=========Message address start \t %p \n",message.data);
+//		message.data[pkt_total * PACKET_DATA_SIZE] = 0;
+		memset(message.data, 0, message.num_packets*PACKET_DATA_SIZE + 1);
 	}
 
-	printf("CURRENT MESSAGE %d\n", cnt_msg);
+	fprintf(stderr, "CURRENT MESSAGE %d with total number %d and stuff %s\n",
+			cnt_msg, message.num_packets, pkt.data);
+
+	fprintf(stderr, "Dest: ~%p~; \t Src: %p \t Size %d \t Offset %d (%d)\n",
+			&message.data[0] + (PACKET_DATA_SIZE * pkt.which), pkt.data,
+			PACKET_DATA_SIZE, pkt.which, PACKET_DATA_SIZE * pkt.which);
 
 	/* insert your code here ... stick packet in memory, make sure to handle duplicates appropriately */
+	if (message.data[PACKET_DATA_SIZE * pkt.which] == 0) {
+		memcpy(message.data + (PACKET_DATA_SIZE * pkt.which), pkt.data,
+				PACKET_DATA_SIZE);
+	} else { // duplicated message deleted, skip this round
+		return;
+	}
 
-	/*Print the packets in the correct order.*/
-
+	++pkt_cnt;
+	if (pkt_cnt == message.num_packets) {
+		/*Print the packets in the correct order.*/
+		fprintf(stderr, "MSG %d: \t|%s| \t\t%p\n\n", cnt_msg, message.data,
+				message.data[8]);
+		mm_put(&MM, (void*) message.data);
+	}
 	/*Deallocate message*/
 
 }
