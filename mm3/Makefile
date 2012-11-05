@@ -3,16 +3,16 @@
 #	gcc -g main_mm.c mm_public.c -o main_mm
 #	gcc -g packet_public.c mm_public.c -o packet_public
 
-all: mm packet
+all:   packet
 
-mm: mm_public.o
+mm: mm_public.o main_mm.c main_malloc.c
 	gcc -g main_mm.c mm_public.o -o main_mm
 	gcc -g main_malloc.c mm_public.o -o main_malloc
 
-packet: mm_public.o
+packet: mm_public.o packet_public.c packet_public.h
 	gcc -g packet_public.c mm_public.o -o packet_public
 
-mm_public.o:
+mm_public.o: mm_public.c  mm_public.h
 	gcc -g -c mm_public.c
 	
 clean:
