@@ -17,7 +17,7 @@ int cnt_msg = 1; /*current message being received*/
 
 #define TIMER_TV_USEC 200000
 #define TIMER_TV_SEC 0
-#define PACKET_DATA_SIZE 8
+#define PACKET_DATA_SIZE 7
 
 packet_t get_packet(int size);
 void packet_handler(int sig);
@@ -26,7 +26,6 @@ int main(int argc, char **argv) {
 	/* set up all the sigsets here*/
 
 	// Weichao's Question, do we need to put all signals within it?
-	// should we use static type here?
 	sigset_t newset;
 	if ((sigemptyset(&newset) == -1) || (sigfillset(&newset) == -1)) {
 		perror("Failed to set up signal set to include all signals.\n");
@@ -123,21 +122,26 @@ void packet_handler(int sig) {
 
 	if (pkt_cnt == 0) { // when the 1st packet arrives, the size of the whole message is allocated.
 		message.num_packets = pkt_total;
-		message.data = (char*) mm_get(&MM, message.num_packets*PACKET_DATA_SIZE + 1); // +1 for ending 0
-		fprintf (stderr,"=========Message address start \t %p \n",message.data);
+		message.data = (char*) mm_get(&MM,
+				message.num_packets * PACKET_DATA_SIZE + 1); // +1 for ending 0
+		fprintf(stderr, "=========Message address start \t %p \n",
+				message.data);
 //		message.data[pkt_total * PACKET_DATA_SIZE] = 0;
-		memset(message.data, 0, message.num_packets*PACKET_DATA_SIZE + 1);
+		memset(message.data, 0, message.num_packets * PACKET_DATA_SIZE + 1);
 	}
+
+	fprintf(stderr, "After get %d: \t|%s| \t\t%p\n", cnt_msg, message.data,
+			message.data);
 
 	fprintf(stderr, "CURRENT MESSAGE %d with total number %d and stuff %s\n",
 			cnt_msg, message.num_packets, pkt.data);
 
-	fprintf(stderr, "Dest: ~%p~; \t Src: %p \t Size %d \t Offset %d (%d)\n",
+	fprintf(stderr, "Dest: ~%p~; \t Src: %p \t Size %d \t Offset %d (%d) \t @cnt %d\n",
 			&message.data[0] + (PACKET_DATA_SIZE * pkt.which), pkt.data,
-			PACKET_DATA_SIZE, pkt.which, PACKET_DATA_SIZE * pkt.which);
+			PACKET_DATA_SIZE, pkt.which, PACKET_DATA_SIZE * pkt.which,pkt_cnt);
 
 	/* insert your code here ... stick packet in memory, make sure to handle duplicates appropriately */
-	if (message.data[PACKET_DATA_SIZE * pkt.which] == 0) {
+	if (message.data[PACKET_DATA_SIZE * pkt.which] == (char) 0) {
 		memcpy(message.data + (PACKET_DATA_SIZE * pkt.which), pkt.data,
 				PACKET_DATA_SIZE);
 	} else { // duplicated message deleted, skip this round
@@ -146,9 +150,16 @@ void packet_handler(int sig) {
 
 	++pkt_cnt;
 	if (pkt_cnt == message.num_packets) {
+		int i;
+		fputs("--------->",stderr);
+		for (i=0;i<(PACKET_DATA_SIZE*message.num_packets);++i){
+//			fputs("%d ",message.data[i],stderr);
+			fprintf(stderr,"%d ",(int)message.data[i]);
+		}
+		fputs("\n",stderr);
 		/*Print the packets in the correct order.*/
 		fprintf(stderr, "MSG %d: \t|%s| \t\t%p\n\n", cnt_msg, message.data,
-				message.data[8]);
+				message.data);
 		mm_put(&MM, (void*) message.data);
 	}
 	/*Deallocate message*/
