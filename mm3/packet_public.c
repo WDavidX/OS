@@ -15,7 +15,7 @@ int pkt_total = 1; /* how many packets to be received for the message */
 int NumMessages = 5; /* number of messages we will receive */
 int cnt_msg = 1; /*current message being received*/
 
-#define TIMER_TV_USEC 200000
+#define TIMER_TV_USEC 100000
 #define TIMER_TV_SEC 0
 #define PACKET_DATA_SIZE 7
 
@@ -130,8 +130,8 @@ void packet_handler(int sig) {
 		memset(message.data, 0, message.num_packets * PACKET_DATA_SIZE + 1);
 	}
 
-	fprintf(stderr, "After get %d: \t|%s| \t\t%p\n", cnt_msg, message.data,
-			message.data);
+//	fprintf(stderr, "After get %d: \t|%s| \t\t%p\n", cnt_msg, message.data,
+//			message.data);
 
 	fprintf(stderr, "CURRENT MESSAGE %d with total number %d and stuff %s\n",
 			cnt_msg, message.num_packets, pkt.data);
