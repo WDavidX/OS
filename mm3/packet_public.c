@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
 	struct sigaction new_action;
 	new_action.sa_handler = packet_handler;
 	new_action.sa_flags = 0;
-	new_action.sa_mask=newset; // should be careful here, not in notes?
+	new_action.sa_mask=newset; // should be careful here. This is not in notes?
 	if (sigaction(SIGALRM, &new_action, NULL) == -1) {
 		perror("Fail to set the new action mask for SIGALRM");
 		exit(1);
