@@ -29,10 +29,10 @@ int mm_init(mm_t *MM, int tsz) {
 	}
 
 	// main stuff starts here
-	// allocate stuff here, it may be out of memory. so error ching after done
+	// allocate MM->stuff here, it may be out of memory. so error checking after done
 	MM->stuff = malloc(tsz);
 	if (MM->stuff == NULL) {
-		perror("Memory manager initialization fails.Out of memory? \n");
+		perror("Memory manager initialization fails. Out of memory? \n");
 		return -1;
 	};
 
