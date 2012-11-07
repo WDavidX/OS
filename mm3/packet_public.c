@@ -51,6 +51,7 @@ int main(int argc, char **argv) {
 	new_action.sa_flags = 0;
 	if (sigaction(SIGALRM, &new_action, NULL) == 1) {
 		perror("Fail to set the new action mask for SIGALRM");
+		exit(1);
 	}
 
 	/* turn on alarm timer ... use  INTERVAL and INTERVAL_USEC for sec and usec values */
@@ -89,7 +90,7 @@ int main(int argc, char **argv) {
 	}
 	/* Deallocate memory manager */
 	mm_release(&MM);
-	fprintf(stderr, "Ending packet_public \n");
+	fprintf(stderr, "Memory manager released. End of packet_public \n");
 }
 
 packet_t get_packet(int size) {
@@ -114,8 +115,8 @@ packet_t get_packet(int size) {
 
 void packet_handler(int sig) {
 	packet_t pkt;
-	fprintf(stderr, "IN PACKET HANDLER, sig=%d %s \t\t Message Packet %d\n",
-			sig, strsignal(sig), cnt_msg);
+	fprintf(stderr, "IN PACKET HANDLER, sig=%d %s \t\t pkt counter so far %d\n",
+			sig, strsignal(sig), pkt_cnt);
 
 	pkt = get_packet(cnt_msg); // the messages are of variable length. So, the 1st message consists of 1 packet, the 2nd message consists of 2 packets and so on..
 	pkt_total = pkt.how_many;
@@ -133,12 +134,12 @@ void packet_handler(int sig) {
 //	fprintf(stderr, "After get %d: \t|%s| \t\t%p\n", cnt_msg, message.data,
 //			message.data);
 
-	fprintf(stderr, "CURRENT MESSAGE %d with total number %d and stuff %s\n",
-			cnt_msg, message.num_packets, pkt.data);
+	fprintf(stderr, "CURRENT MESSAGE %d with message total number %d, which %d and stuff %s\n",
+			cnt_msg, message.num_packets, pkt.which, pkt.data);
 
-	fprintf(stderr, "Dest: ~%p~; \t Src: %p \t Size %d \t Offset %d (%d) \t @cnt %d\n",
-			&message.data[0] + (PACKET_DATA_SIZE * pkt.which), pkt.data,
-			PACKET_DATA_SIZE, pkt.which, PACKET_DATA_SIZE * pkt.which,pkt_cnt);
+//	fprintf(stderr, "Dest: ~%p~; \t Src: %p \t Size %d \t Offset %d (%d) \t @cnt %d\n",
+//			&message.data[0] + (PACKET_DATA_SIZE * pkt.which), pkt.data,
+//			PACKET_DATA_SIZE, pkt.which, PACKET_DATA_SIZE * pkt.which,pkt_cnt);
 
 	/* insert your code here ... stick packet in memory, make sure to handle duplicates appropriately */
 	if (message.data[PACKET_DATA_SIZE * pkt.which] == (char) 0) {
