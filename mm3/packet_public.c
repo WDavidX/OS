@@ -1,3 +1,12 @@
+/* CSci4061 F2012 Assignment 3
+* section: 3
+* login: schm2225
+* date: 11/12/12
+* names: Aaron Schmitz, Weichao Xu
+* id: 3891645, 4284387
+*/
+
+
 //#include "mm_public.h"
 #include "packet_public.h"
 #include <string.h>
@@ -61,11 +70,11 @@ int main(int argc, char **argv) {
 	interval.it_interval.tv_usec = TIMER_TV_USEC;
 	if (setitimer(ITIMER_REAL, &interval, NULL) == -1) {
 		fprintf(stderr,
-				"Fail to set real-time timber to sec=%d, micro sec=%d: %s\n",
+				"Fail to set real-time timer to sec=%d, micro sec=%d: %s\n",
 				TIMER_TV_SEC, TIMER_TV_USEC, strerror(errno));
 		exit(1);
 	} else {
-		fprintf(stderr, "Real-time timber set to sec=%d, micro sec=%d.\n",
+		fprintf(stderr, "Real-time timer set to sec=%d, micro sec=%d.\n",
 				TIMER_TV_SEC, TIMER_TV_USEC);
 	}
 

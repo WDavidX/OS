@@ -1,3 +1,11 @@
+/* CSci4061 F2012 Assignment 3
+* section: 3
+* login: schm2225
+* date: 11/12/12
+* names: Aaron Schmitz, Weichao Xu
+* id: 3891645, 4284387
+*/
+
 #include "mm_public.h"
 
 /* Returns microseconds. */
@@ -29,11 +37,11 @@ int mm_init(mm_t *MM, int tsz) {
 	}
 
 	// main stuff starts here
-	// allocate stuff here, it may be out of memory. so error ching after done
+	// Allocate stuff here, it may be out of memory. so error ching after done
 	MM->stuff = malloc(tsz);
 	if (MM->stuff == NULL) {
-		perror("Memory manager initialization fails.Out of memory? \n");
-		return -1;
+		perror("Memory manager initialization failed. Out of memory? \n");
+		return 0;
 	};
 
 	// initial some attributes and create the first node info
@@ -73,6 +81,10 @@ void* mm_get(mm_t *MM, int neededSize) {
 		}
 
 		node *newNode = malloc(sizeof(node));
+		if (MM->stuff == NULL) {
+			perror("Allocation failed. Out of memory? \n");
+			return NULL;
+		};
 		newNode->size = neededSize;
 		newNode->inuse = INUSE;
 		newNode->address = currp->address;
@@ -174,7 +186,7 @@ void mm_release(mm_t *MM) {
 		fprintf(stderr, "Input pointer is NULL");
 		return;
 	}
-	// Done release of some memory are still in use
+	// Some chunks are still in use
 	if (MM->partitions > 1 || MM->first->inuse == INUSE) {
 		fprintf(stderr, "There are partitions in use.");
 		return;
