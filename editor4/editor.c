@@ -41,7 +41,7 @@ pthread_mutex_t text_ = PTHREAD_MUTEX_INITIALIZER;
 // The current position of the cursor in the screen
 int row;
 int col;
-
+ 
 // Lines visible in the current view of textbuff
 // visible on the screen
 int view_min;
@@ -52,6 +52,8 @@ int view_max;
  * and returns it.
  */
 message* pop(){
+
+	return NULL;
 }
 
 
@@ -59,6 +61,8 @@ message* pop(){
  * Inserts a message at the back of the message queue
  */
 void push(message* m_){
+
+	
 
 }
 
@@ -239,6 +243,8 @@ void *start_UI(void *threadid){
 
     refresh();
     loop();
+    
+    return NULL;
 }
 
 /**
@@ -253,11 +259,13 @@ void *autosave(void *threadid){
         // Read lines from the text buffer and save them to the temporary file
 
         // Close the temporary file and sleep for 5 sec.
+        
+     return NULL;
 
 }
 
 int main(int argc, char **argv){
-
+	printf("CSCI 4601 Lab 4 Editor\n");
     row = 0;
     col = 0;
 
@@ -282,4 +290,5 @@ int main(int argc, char **argv){
         // If DEL then delete the specified character from the text buffer
 
     // Clean up data structures
+    return 0;
 }
