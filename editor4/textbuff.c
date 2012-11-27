@@ -1,7 +1,15 @@
+#include <stdio.h>
+#include <pthread.h>
+#include <stdlib.h>
+#include <curses.h>
+#include <string.h>
 #ifndef textbuff_h_
-#define textbuff_h_
+#include "textbuff.h"
+#endif
+#ifndef textbuff_c_
+#define textbuff_c_
 
-
+node* root;
 // Maximum length of a line in the textbuffer
 
     /**
@@ -12,7 +20,28 @@
      * the text buffer.
      */
 void init_textbuff(char* file){
+	char line[LINEMAX + 1];
+	node* end = root;
 
+	FILE* finput;
+	if (((finput = fopen(file, "rw")) == 0)) {
+		perror("Invalid master input file");
+		exit(1);
+	}
+
+	while(fgets(line, LINEMAX, finput) != NULL)
+	{
+		node* newend = malloc(sizeof(node));
+		if (newend == NULL)
+		{
+			perror("Could not allocate memory!");
+			exit(1);
+		}
+		end->next = newend;
+		end = newend;
+		end->data = malloc(LINEMAX + 1);
+		strncpy(end->data, line, LINEMAX + 1);
+	}
 };
 
     /**
@@ -26,8 +55,45 @@ void init_textbuff(char* file){
      * @returns 0 if error occurs and 1 if successful
      */
 int appendLine(char* line){
+	int i = 0, j;
+	node* end = root;
+	while (end->next != NULL)
+	{
+		end = end->next;
+	}
+	
+	while (line[i] != '\0')
+	{
+		node* newend = malloc(sizeof(node));
+		if (newend == NULL)
+		{
+			perror("Could not allocate memory!");
+			return 0;
+		}
+		
+		if (end != NULL)
+		{
+			end->next = newend;
+			end = newend;
+		}
+		else
+		{
+			root = end = newend;
+		}
 
-		return 1;
+		end->data = malloc(LINEMAX + 1);
+		if (end->data == NULL)
+		{
+			perror("Could not allocate memory!");
+			return 0;
+		}
+		for (j=0; line[i] != '\n' && line[i] != '\0' && j < LINEMAX; i++, j++)
+		{
+			end->data[j] = line[i];
+		}
+		end->data[j+1] = '\0';
+	}
+	return 1;
 };
 
     /**
@@ -40,7 +106,17 @@ int appendLine(char* line){
      * @returns 0 if error occurs or 1 if successful
      */
 int getLine(int index, char** returnLine){
-		return 1;
+	int i;
+	node* end = root;
+	for (i = 0; end != NULL && i < index; i++)
+	{
+		end = end->next;
+	}
+	if (end == NULL) return 0;
+	
+	returnLine = malloc(LINEMAX + 1);
+	strncpy(*returnLine, end->data, LINEMAX+1);
+	return 1;
 };
 
     /**
@@ -52,14 +128,107 @@ int getLine(int index, char** returnLine){
      * @returns 0 if error occurs or 1 if successful
      */
 int insert(int row, int col, char text){
+	if (root == NULL && row == 0 && col == 0)
+	{
+		root = malloc(sizeof(node));
+		if (root == NULL)
+		{
+			perror("Could not allocate memory!");
+			return 0;
+		}
+		root->data = malloc(LINEMAX + 1);
+		if (root->data == NULL)
+		{
+			perror("Could not allocate memory!");
+			return 0;
+		}
+		root->data[0] = text;
+		root->data[1] = '\0';
 		return 1;
+	}
+
+	int i;
+	node* end = root;
+	for (i = 0; end != NULL && i < row; i++)
+	{
+		end = end->next;
+	}
+	if (end == NULL) return 0;
+	
+	if (col > LINEMAX) return 0;
+	
+	int len = strlen(end->data);
+	if (col == LINEMAX && len == LINEMAX-1)
+	{
+		node* add = malloc(sizeof(node));
+		if (root == NULL)
+		{
+			perror("Could not allocate memory!");
+			return 0;
+		}
+		add->data = malloc(LINEMAX + 1);
+		if (add->data == NULL)
+		{
+			perror("Could not allocate memory!");
+			return 0;
+		}
+		add->data[0] = text;
+		add->data[1] = '\0';
+		
+		add->next = end->next;
+		end->next = add;
+		return 1;
+	}
+	if (col == LINEMAX || col > len) return 0;
+	
+	if (col == len)
+	{
+		end->data[col] = text;
+		end->data[col + 1] = '\0';
+		return 1;
+	}
+	
+	if (len == LINEMAX)
+	{
+		node* add = malloc(sizeof(node));
+		if (root == NULL)
+		{
+			perror("Could not allocate memory!");
+			return 0;
+		}
+		add->data = malloc(LINEMAX + 1);
+		if (add->data == NULL)
+		{
+			perror("Could not allocate memory!");
+			return 0;
+		}
+		add->data[0] = end->data[len - 1];
+		add->data[1] = '\0';
+		
+		add->next = end->next;
+		end->next = add;
+		strncpy(end->data + col + 1, end->data + col, LINEMAX+1);
+		end->data[col] = text;
+		end->data[LINEMAX] = '\0';
+		return 1;
+	}
+	
+	strncpy(end->data + col + 1, end->data + col, LINEMAX+1);
+	end->data[col] = text;
+	return 1;
 };
 
     /**
      * Returns the number of lines in the textbuffer
      */
 int getLineLength(){
-		return 1;
+	int i;
+	node* end = root;
+	for (i = 0; end != NULL; i++)
+	{
+		end = end->next;
+	}
+	return i;
 };
 
     /**
@@ -67,7 +236,40 @@ int getLineLength(){
      * @returns 0 if error otherwise returns 1
      */
 int deleteLine(int index){
+	if (index == 0)
+	{
+		node* temp = root;
+		root = root->next;
+		free(temp->data);
+		free(temp);
 		return 1;
+	}
+	
+	if (root == NULL) return 0;
+	
+	node* end = root;
+	int i;
+	for (i = 0; end->next != NULL && i < index - 1; i++)
+	{
+		end = end->next;
+	}
+	
+	if (end->next == NULL) return 0;
+
+	if (end->next->next == NULL)
+	{
+		free(end->next->data);
+		free(end->next);
+		end->next = NULL;
+	}
+	else
+	{
+		node* temp = end->next;
+		end->next = end->next->next;
+		free(temp->data);
+		free(temp);
+	}
+	return 1;
 };
 
     /**
@@ -76,7 +278,20 @@ int deleteLine(int index){
      * @returns 0 if error otherwise returns 1
      */
 int deleteCharacter(int row, int col){
+	int i;
+	node* end = root;
+	for (i = 0; end != NULL && i < row; i++)
+	{
+		end = end->next;
+	}
+	if (end == NULL) return 0;
+	
+	if (col > 0 && col < LINEMAX)
+	{
+		strncpy(end->data + col, end->data + col + 1, LINEMAX+1);
 		return 1;
+	}
+	return 0;
 };
 
     /**
@@ -84,6 +299,12 @@ int deleteCharacter(int row, int col){
      * to -1 represinting that the buffer is invalid
      */
 void deleteBuffer(){
-
+	while (root != NULL)
+	{
+		node* temp = root;
+		root = root->next;
+		free(temp->data);
+		free(temp);
+	}
 };
 #endif
