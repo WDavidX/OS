@@ -21,14 +21,14 @@ node* root;
      */
 void init_textbuff(char* file){
 	char line[LINEMAX + 1];
-	node* end = root;
+	node* end;
 
 	FILE* finput;
 	if (((finput = fopen(file, "rw")) == 0)) {
-		perror("Invalid master input file");
+		perror("Invalid file!");
 		exit(1);
 	}
-
+	
 	while(fgets(line, LINEMAX, finput) != NULL)
 	{
 		node* newend = malloc(sizeof(node));
@@ -37,10 +37,40 @@ void init_textbuff(char* file){
 			perror("Could not allocate memory!");
 			exit(1);
 		}
-		end->next = newend;
-		end = newend;
+		if (end == NULL)
+		{
+			root = end = newend;
+		}
+		else
+		{
+			end->next = newend;
+			end = newend;
+		}
 		end->data = malloc(LINEMAX + 1);
+		if (end->data == NULL)
+		{
+			perror("Could not allocate memory!");
+			exit(1);
+		}
+		if (strlen(line) > 0 && line[strlen(line)-1] == '\n') line[strlen(line)-1] = '\0';
 		strncpy(end->data, line, LINEMAX + 1);
+	}
+	
+	if (root == NULL)
+	{
+		root = malloc(sizeof(node));
+		if (root == NULL)
+		{
+			perror("Could not allocate memory!");
+			exit(1);
+		}
+		root->data = malloc(1);
+		if (root->data == NULL)
+		{
+			perror("Could not allocate memory!");
+			exit(1);
+		}
+		root->data[0] = '\0';
 	}
 };
 
@@ -54,10 +84,10 @@ void init_textbuff(char* file){
      * appended
      * @returns 0 if error occurs and 1 if successful
      */
-int appendLine(char* line){
+/*int appendLine(char* line){
 	int i = 0, j;
 	node* end = root;
-	while (end->next != NULL)
+	while (end != NULL && end->next != NULL)
 	{
 		end = end->next;
 	}
@@ -94,7 +124,7 @@ int appendLine(char* line){
 		end->data[j+1] = '\0';
 	}
 	return 1;
-};
+};*/
 
     /**
      * Fetches line index from the buffer
@@ -114,8 +144,7 @@ int getLine(int index, char** returnLine){
 	}
 	if (end == NULL) return 0;
 	
-	returnLine = malloc(LINEMAX + 1);
-	strncpy(*returnLine, end->data, LINEMAX+1);
+	*returnLine = end->data;
 	return 1;
 };
 
@@ -128,25 +157,6 @@ int getLine(int index, char** returnLine){
      * @returns 0 if error occurs or 1 if successful
      */
 int insert(int row, int col, char text){
-	if (root == NULL && row == 0 && col == 0)
-	{
-		root = malloc(sizeof(node));
-		if (root == NULL)
-		{
-			perror("Could not allocate memory!");
-			return 0;
-		}
-		root->data = malloc(LINEMAX + 1);
-		if (root->data == NULL)
-		{
-			perror("Could not allocate memory!");
-			return 0;
-		}
-		root->data[0] = text;
-		root->data[1] = '\0';
-		return 1;
-	}
-
 	int i;
 	node* end = root;
 	for (i = 0; end != NULL && i < row; i++)
