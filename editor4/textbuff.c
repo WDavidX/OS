@@ -21,7 +21,7 @@ node* root;
      */
 void init_textbuff(char* file){
 	char line[LINEMAX + 1];
-	node* end;
+	node* end = NULL;
 
 	FILE* finput;
 	if (((finput = fopen(file, "rw")) == 0)) {
