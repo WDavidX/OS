@@ -37,6 +37,7 @@ struct message_t{
 
 message* first;
 message* last;
+int count;
 
 // mutex to control access to the text buffer
 pthread_mutex_t text_ = PTHREAD_MUTEX_INITIALIZER;
@@ -64,6 +65,7 @@ message* pop(){
 		pthread_mutex_lock(&queue);
 		message* ret = first;
 		first = first->next;
+		count--;
 		pthread_mutex_unlock(&queue);
 		return ret;
 	}
@@ -76,14 +78,24 @@ message* pop(){
  */
 void push(message* m_){
 	pthread_mutex_lock(&queue);	
+	while(count >= QUEUEMAX)
+	{
+		pthread_mutex_unlock(&queue);	
+		usleep(10);
+		pthread_mutex_lock(&queue);	
+	}
+	
 	if (first == NULL)
 	{
 		first = last = m_;
+		first->next = NULL;
 	}
 	else
 	{
 		last->next = m_;
+		m_->next = NULL;
 	}
+	count++;
 	pthread_mutex_unlock(&queue);
 }
 
@@ -245,6 +257,7 @@ void loop(){
                 // Add code here to quit the program
 				msg.command = QUIT;
 				push(&msg);
+				pthread_exit(NULL);
                 // ------------------------------
             default:
                 flash();
@@ -291,6 +304,7 @@ void *autosave(void *threadid){
 		FILE* fout;
 		if (((fout = fopen(backup, "w")) == 0)) {
 			perror("Cannot save file!");
+			pthread_mutex_unlock(&back);
 			continue;
 		}
 
@@ -300,9 +314,10 @@ void *autosave(void *threadid){
 		for (i = 0; i < lines; i++)
 		{
 			char* line;
-			if (getLine(i, &line) == 0)
+			if (getLine(i, &line))
 			{
 				fprintf(fout, "%s", line);
+				if (i < lines - 1) fprintf(fout, "\n");
 			}
 		}
 		pthread_mutex_unlock(&text_);
@@ -346,6 +361,7 @@ int main(int argc, char **argv) {
 
     // set up necessary data structures for message passing queue and initialize textbuff
 	last = first = NULL;
+	count = 0;
 	init_textbuff(filename);
 
     // spawn UI thread
@@ -374,7 +390,7 @@ int main(int argc, char **argv) {
 
 			// If SAVE then save the file additionally delete the temporary save
 			case SAVE:
-				pthread_mutex_lock(&back);
+			{
 				FILE* fout;
 				if (((fout = fopen(filename, "w")) == 0)) {
 					perror("Cannot save file!");
@@ -385,16 +401,20 @@ int main(int argc, char **argv) {
 				for (i = 0; i < lines; i++)
 				{
 					char* line;
-					if (!getLine(i, &line))
+					if (getLine(i, &line))
 					{
 						fprintf(fout, "%s", line);
+						if (i < lines - 1) fprintf(fout, "\n");
 					}
 				}
+				fclose(fout);
+
+				pthread_mutex_lock(&back);
 				unlink(backup);
-				
 				pthread_mutex_unlock(&back);
 				break;
-
+			}
+			
 			// If QUIT then quit the program and tell the appropriate threads to stop
 			case QUIT:
 				quit = TRUE;
@@ -410,13 +430,20 @@ int main(int argc, char **argv) {
 	}
 
     // Clean up data structures
-	pthread_mutex_lock(&back);
+	printf("Canceling autosave thread.\n"); fflush(stdout);
 	pthread_cancel(as_id);
-	pthread_mutex_unlock(&back);
+	pthread_join(as_id, NULL);
 
-	pthread_cancel(ui_id);
+	printf("Joinging UI thread.\n"); fflush(stdout);
+	pthread_join(ui_id, NULL);
+	
+	printf("Freeing textbuff.\n"); fflush(stdout);
 	deleteBuffer();
+	
+	printf("Freeing filename.\n"); fflush(stdout);
 	free(backup);
-	while(pop());
+	
+	printf("Freeing queue.\n"); fflush(stdout);
+	while(pop() != NULL);
     return 0;
 }
