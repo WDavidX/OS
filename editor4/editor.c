@@ -1,3 +1,10 @@
+/* CSci4061 F2012 Assignment 4
+* section: 3
+* login: schm2225
+* date: 11/12/12
+* names: Aaron Schmitz, Weichao Xu
+* id: 3891645, 4284387
+*/
 #include <stdio.h>
 #include <pthread.h>
 #include <stdlib.h>
@@ -49,7 +56,7 @@ char* backup;
 // The current position of the cursor in the screen
 int row;
 int col;
- 
+
 // Lines visible in the current view of textbuff
 // visible on the screen
 int view_min;
@@ -77,14 +84,14 @@ message* pop(){
  * Inserts a message at the back of the message queue
  */
 void push(message* m_){
-	pthread_mutex_lock(&queue);	
+	pthread_mutex_lock(&queue);
 	while(count >= QUEUEMAX)
 	{
-		pthread_mutex_unlock(&queue);	
+		pthread_mutex_unlock(&queue);
 		usleep(10);
-		pthread_mutex_lock(&queue);	
+		pthread_mutex_lock(&queue);
 	}
-	
+
 	if (first == NULL)
 	{
 		first = last = m_;
@@ -234,30 +241,28 @@ void loop(){
                 flash();
 
                 // Add code here to delete character (row, col) from textbuf
-				msg.row = row;
-				msg.col = col;
-				msg.command = DEL;
-				push(&msg);
+								msg.row = row;
+								msg.col = col;
+								msg.command = DEL;
+								push(&msg);
                 // ------------------------------
-
                 redraw(view_min,view_max,row,col,0);
                 break;
             case 'w':
                 flash();
 
                 // Add code here to save the textbuf file
-				msg.command = SAVE;
-				push(&msg);
+								msg.command = SAVE;
+								push(&msg);
                 // ------------------------------
-
                 break;
             case 'q':
                 endwin();
 
                 // Add code here to quit the program
-				msg.command = QUIT;
-				push(&msg);
-				pthread_exit(NULL);
+								msg.command = QUIT;
+								push(&msg);
+								pthread_exit(NULL);
                 // ------------------------------
             default:
                 flash();
@@ -287,7 +292,7 @@ void *start_UI(void *threadid){
 
     refresh();
     loop();
-    
+
     return NULL;
 }
 
@@ -327,7 +332,7 @@ void *autosave(void *threadid){
 		pthread_mutex_unlock(&back);
 		sleep(5);
 	}
-        
+
     return NULL;
 
 }
@@ -336,7 +341,7 @@ int main(int argc, char **argv) {
 	printf("CSCI 4601 Lab 4 Editor\n");
     row = 0;
     col = 0;
-	
+
 	pthread_t ui_thread, as_thread;
 
     // get text file from argv
@@ -347,7 +352,7 @@ int main(int argc, char **argv) {
 		printf("Incorrect number of arguments.\n");
 		exit(1);
 	}
-	
+
 	int len = strlen(filename);
 	backup = malloc(len + 2);
 	if (backup == NULL)
@@ -376,7 +381,7 @@ int main(int argc, char **argv) {
 	{
         // Recieve messages from the message queue
 		message* msg = pop();
-		
+
 		if (msg == NULL) continue;
 
 		switch (msg->command)
@@ -414,7 +419,7 @@ int main(int argc, char **argv) {
 				pthread_mutex_unlock(&back);
 				break;
 			}
-			
+
 			// If QUIT then quit the program and tell the appropriate threads to stop
 			case QUIT:
 				quit = TRUE;
@@ -426,7 +431,7 @@ int main(int argc, char **argv) {
 				deleteCharacter(msg->row, msg->col);
 				pthread_mutex_unlock(&text_);
 				break;
-		}	
+		}
 	}
 
     // Clean up data structures
@@ -436,13 +441,13 @@ int main(int argc, char **argv) {
 
 	printf("Joinging UI thread.\n"); fflush(stdout);
 	pthread_join(ui_id, NULL);
-	
+
 	printf("Freeing textbuff.\n"); fflush(stdout);
 	deleteBuffer();
-	
+
 	printf("Freeing filename.\n"); fflush(stdout);
 	free(backup);
-	
+
 	printf("Freeing queue.\n"); fflush(stdout);
 	while(pop() != NULL);
     return 0;
