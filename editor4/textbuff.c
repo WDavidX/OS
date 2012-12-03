@@ -20,16 +20,19 @@ node* root;
      * the text buffer.
      */
 void init_textbuff(char* file){
-	char line[LINEMAX + 1];
+	//Allocate for line length + endl
+	char line[LINEMAX + 2];
 	node* end = NULL;
 
+	//Open file
 	FILE* finput;
+	printf("Opening file.\n"); fflush(stdout);
 	if (((finput = fopen(file, "rw")) == 0)) {
 		perror("Invalid file!");
 		exit(1);
 	}
 	
-	while(fgets(line, LINEMAX, finput) != NULL)
+	while(fgets(line, LINEMAX + 2, finput) != NULL)
 	{
 		node* newend = malloc(sizeof(node));
 		if (newend == NULL)
@@ -37,10 +40,12 @@ void init_textbuff(char* file){
 			perror("Could not allocate memory!");
 			exit(1);
 		}
+		//First node
 		if (end == NULL)
 		{
 			root = end = newend;
 		}
+		//Add node
 		else
 		{
 			end->next = newend;
@@ -52,10 +57,12 @@ void init_textbuff(char* file){
 			perror("Could not allocate memory!");
 			exit(1);
 		}
-		if (strlen(line) > 0 && line[strlen(line)-1] == '\n') line[strlen(line)-1] = '\0';
+		if (strlen(line) == LINEMAX + 1 && line[LINEMAX] != '\n') ungetc(line[LINEMAX], finput);
+		if (strlen(line) > 0) line[strlen(line)-1] = '\0';
 		strncpy(end->data, line, LINEMAX + 1);
 	}
 	
+	//Empty file
 	if (root == NULL)
 	{
 		root = malloc(sizeof(node));
@@ -73,58 +80,6 @@ void init_textbuff(char* file){
 		root->data[0] = '\0';
 	}
 };
-
-    /**
-     * Appends the everything from line
-     * until a newline is reached to the
-     * current text buffer. If LINEMAX is
-     * reached it inserts a newline and
-     * continues appending line.
-     * @params line the line of text to be
-     * appended
-     * @returns 0 if error occurs and 1 if successful
-     */
-/*int appendLine(char* line){
-	int i = 0, j;
-	node* end = root;
-	while (end != NULL && end->next != NULL)
-	{
-		end = end->next;
-	}
-	
-	while (line[i] != '\0')
-	{
-		node* newend = malloc(sizeof(node));
-		if (newend == NULL)
-		{
-			perror("Could not allocate memory!");
-			return 0;
-		}
-		
-		if (end != NULL)
-		{
-			end->next = newend;
-			end = newend;
-		}
-		else
-		{
-			root = end = newend;
-		}
-
-		end->data = malloc(LINEMAX + 1);
-		if (end->data == NULL)
-		{
-			perror("Could not allocate memory!");
-			return 0;
-		}
-		for (j=0; line[i] != '\n' && line[i] != '\0' && j < LINEMAX; i++, j++)
-		{
-			end->data[j] = line[i];
-		}
-		end->data[j+1] = '\0';
-	}
-	return 1;
-};*/
 
     /**
      * Fetches line index from the buffer
@@ -158,20 +113,20 @@ int getLine(int index, char** returnLine){
      */
 int insert(int row, int col, char text){
 	int i;
-	node* end = root;
-	for (i = 0; end != NULL && i < row; i++)
-	{
-		end = end->next;
-	}
+	node *temp, *end = root;
 	if (end == NULL) return 0;
 	
-	if (col > LINEMAX) return 0;
-	
-	int len = strlen(end->data);
-	if (col == LINEMAX && len == LINEMAX-1)
+	//Seek the node
+	for (i = 0; end != NULL && i < row; i++)
 	{
+		temp = end;
+		end = end->next;
+	}
+	
+	//Add a new line
+	if (end == NULL && i == row) {
 		node* add = malloc(sizeof(node));
-		if (root == NULL)
+		if (add == NULL)
 		{
 			perror("Could not allocate memory!");
 			return 0;
@@ -185,45 +140,42 @@ int insert(int row, int col, char text){
 		add->data[0] = text;
 		add->data[1] = '\0';
 		
-		add->next = end->next;
-		end->next = add;
-		return 1;
+		add->next = NULL;
+		temp->next = add;
 	}
-	if (col == LINEMAX || col > len) return 0;
+	//Beyond last line
+	else if (end == NULL) return 0;
 	
-	if (col == len)
+	int len = strlen(end->data);
+	//Beyond LINEMAX
+	if (col > LINEMAX) return 0;
+	//Last character => wrap
+	else if (col == LINEMAX - 1 && len == LINEMAX-1)
+	{
+		return insert(row + 1, 0, text);
+	}
+	//Beyond the end of the line
+	else if (col == LINEMAX || col > len) return 0;
+	//Last character on the line
+	else if (col == len)
 	{
 		end->data[col] = text;
 		end->data[col + 1] = '\0';
 		return 1;
 	}
-	
-	if (len == LINEMAX)
+	//Insert and wrap
+	else if (len == LINEMAX)
 	{
-		node* add = malloc(sizeof(node));
-		if (root == NULL)
-		{
-			perror("Could not allocate memory!");
-			return 0;
-		}
-		add->data = malloc(LINEMAX + 1);
-		if (add->data == NULL)
-		{
-			perror("Could not allocate memory!");
-			return 0;
-		}
-		add->data[0] = end->data[len - 1];
-		add->data[1] = '\0';
-		
-		add->next = end->next;
-		end->next = add;
-		strncpy(end->data + col + 1, end->data + col, LINEMAX+1);
-		end->data[col] = text;
-		end->data[LINEMAX] = '\0';
-		return 1;
+		char temp = end->data[len - 1];
+		insert(row + 1, 0, temp);
+		len--;
 	}
-	
-	strncpy(end->data + col + 1, end->data + col, LINEMAX+1);
+
+	end->data[len + 1] = '\0';
+	for (i = len; i > col; i--)
+	{
+		end->data[i] = end->data[i-1];
+	}
 	end->data[col] = text;
 	return 1;
 };
@@ -242,47 +194,6 @@ int getLineLength(){
 };
 
     /**
-     * Delete the line index
-     * @returns 0 if error otherwise returns 1
-     */
-int deleteLine(int index){
-	if (index == 0)
-	{
-		node* temp = root;
-		root = root->next;
-		free(temp->data);
-		free(temp);
-		return 1;
-	}
-	
-	if (root == NULL) return 0;
-	
-	node* end = root;
-	int i;
-	for (i = 0; end->next != NULL && i < index - 1; i++)
-	{
-		end = end->next;
-	}
-	
-	if (end->next == NULL) return 0;
-
-	if (end->next->next == NULL)
-	{
-		free(end->next->data);
-		free(end->next);
-		end->next = NULL;
-	}
-	else
-	{
-		node* temp = end->next;
-		end->next = end->next->next;
-		free(temp->data);
-		free(temp);
-	}
-	return 1;
-};
-
-    /**
      * Delete a single characer at (row,col)
      * from the text buffer
      * @returns 0 if error otherwise returns 1
@@ -296,9 +207,14 @@ int deleteCharacter(int row, int col){
 	}
 	if (end == NULL) return 0;
 	
-	if (col > 0 && col < LINEMAX)
+	int len = strlen(end->data);
+	if (col >= 0 && col < len && col < LINEMAX)
 	{
-		strncpy(end->data + col, end->data + col + 1, LINEMAX+1);
+		int i;
+		for (i = col; i < len; i++)
+		{
+			end->data[i] = end->data[i + 1];
+		}
 		return 1;
 	}
 	return 0;
