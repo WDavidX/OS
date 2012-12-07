@@ -125,15 +125,13 @@ int get_request(int fd, char *filename) {
 		perror("get_reqeust fails to read.");
 		return -1;
 	} else {
-		fprintf(stderr, "\n-----------------------\n"
-				"%d bytes read from fd %d\n", nbyte, fd);
+		//	fprintf(stderr, "%d bytes read from fd %d\n", nbyte, fd);
 	}
-	fprintf(stderr, "\n%s", buf);
-
+//	fprintf(stderr, "\n%s", buf);
 
 	char **lines;
 	makeargv(buf, "\n", &lines);
-	fprintf(stderr, "\n--> %s", lines[0]);
+//	fprintf(stderr, "\n--> %s", lines[0]);
 
 	// Syntax check for GET request
 	char **line_tokens;
@@ -144,18 +142,18 @@ int get_request(int fd, char *filename) {
 	}
 
 	char **http_tokens;
-	int nhttp=makeargv(line_tokens[2],"/",&http_tokens);
-	if (nhttp!=2 || strcmp(http_tokens[0],"HTTP")){
-		fprintf(stderr, "Bad format, expecting HTTP/: %s/   %d\n"
-				, http_tokens[0],nhttp);
+	int nhttp = makeargv(line_tokens[2], "/", &http_tokens);
+	if (nhttp != 2 || strcmp(http_tokens[0], "HTTP")) {
+		fprintf(stderr, "Bad format, expecting HTTP/: %s/   %d\n",
+				http_tokens[0], nhttp);
 		return -1;
 	}
 
 	char **version_tokens;
-	int nversion=makeargv(http_tokens[1],".",&version_tokens);
-	if (nversion<1){
-		fprintf(stderr, "Bad format, expecting a decimal number: %s/   %d\n"
-				, http_tokens[1],nversion);
+	int nversion = makeargv(http_tokens[1], ".", &version_tokens);
+	if (nversion < 1) {
+		fprintf(stderr, "Bad format, expecting a decimal number: %s/   %d\n",
+				http_tokens[1], nversion);
 		return -1;
 	}
 
@@ -167,15 +165,16 @@ int get_request(int fd, char *filename) {
 //			return -1;
 //	}
 
-	if ( !strcmp(line_tokens[1],"..") || !strcmp(line_tokens[1],"//")){
-		fprintf(stderr, "Security violation for the file name: %s\n"
-				, line_tokens[1]);
+	if (!strcmp(line_tokens[1], "..") || !strcmp(line_tokens[1], "//")) {
+		fprintf(stderr, "Security violation for the file name: %s\n",
+				line_tokens[1]);
 		return -1;
 	}
 
 	// return the file name upon correct GET request
-	filename = line_tokens[1];
-	fprintf(stderr, "Return the filename: %s\n"	, line_tokens[1]);
+	strcpy(filename, line_tokens[1]);
+	//strcat(filename,"\0");
+//	fprintf(stderr, "======>Return the filename: %s with len=%d\n"	, filename,strlen(filename));
 
 	return 0;
 
@@ -205,12 +204,15 @@ int return_result(int fd, char *content_type, char *buf, int numbytes) {
 // then finally send back the resulting file
 // then close the connection
 
-	fprintf(stderr,"return result to client\n");
+	fprintf(stderr, "Return result to client, %d bytes\n", numbytes);
 
-	char header_buf[MAX_HTTP_OUTGOING_HEADER_SIZE];
-	int nheader_byte=sprintf(header_buf,"HTTP/1.1 200 OK\nContent-Type: %s\nContent-Length: %d\nConnection: Close\n\n",
-					content_type, numbytes);
-	fprintf(stderr,"Outgoing Header:\n%s",header_buf);
+	FILE *stream = fdopen(fd, "w");
+	fprintf(stream,
+			"HTTP/1.1 200 OK\nContent-Type: %s\nContent-Length: %d\nConnection: Close\n\n",
+			content_type, numbytes);
+	fwrite((void*) buf, 1, numbytes, stream);
+	fclose(stream);
+
 	return 0;
 }
 
@@ -228,8 +230,16 @@ int return_error(int fd, char *buf) {
 // send back the error message as a piece of text.
 // then close the connection
 
+	char httpmsg[MAX_HTTP_OUTGOING_HEADER_SIZE];
+	int nheader_byte =
+			sprintf(httpmsg,
+					"HTTP/1.0 404 Not Found\nContent-type: text/plain\nContent-Length: %d\nConnection: Close\n\nError-message: %s\n\0",
+					-1, buf);
+//	fprintf(stderr,"%s",httpmsg);
+	fprintf(stderr, "Return error to client, % bytes\n", strlen(nheader_byte));
 	FILE *stream = fdopen(fd, "w");
-
+	fprintf(stream, "%s", httpmsg);
+	fclose(stream);
 	/* A 404 error might look like this string, where %d is the content length:
 	 * "HTTP/1.0 404 Not Found\nContent-Length: %d\nConnection: Close\n\n"
 	 */

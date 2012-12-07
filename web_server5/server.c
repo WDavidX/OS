@@ -54,12 +54,14 @@ void * dispatch(void *arg) {
 		}
 
 		if (get_request(fd, mybuf) != 0) {
-			// printf("Bad request, thread id=%d\n",id);
+//			 printf("Bad request, thread id=%d\n",id);
 			continue;// back to top of the loop!
 		}
-		// printf("Dispatch %d got request: %s\n",id,mybuf);
+//		 printf("Dispatch %d got request: %s\n",id,mybuf);
 		reqptr = (char *) malloc(strlen(mybuf) + 1);
 		strcpy(reqptr, mybuf);
+		reqptr[strlen(mybuf)] = '\0';
+//		fprintf(stderr,"=====>Get the filename %s \t mybuf %s\n",reqptr,mybuf);
 
 		// put request in queue
 		pthread_mutex_lock(&req_queue_mutex);
@@ -115,6 +117,7 @@ void * worker(void *arg) {
 		if (strcmp(mybuf, "/") == 0)
 			strcpy(mybuf, "/index.html");
 
+		fprintf(stderr, "Opening file %s\n", mybuf);
 		// increment global timestamp
 		int filefd;
 		if ((filefd = open(mybuf + 1, O_RDONLY)) == -1) {
@@ -175,12 +178,12 @@ int main(int argc, char **argv) {
 	}
 
 	int ct;
-	for (ct = 0; ct<6 ; ct++ ){
-		fprintf(stderr,"%d: %s\n",ct, argv[ct]);
+	for (ct = 0; ct < 6; ct++) {
+		fprintf(stderr, "%d: %s\n", ct, argv[ct]);
 	}
 
 	if (chdir(argv[2]) != 0) {
-		fprintf(stderr,"server root: %d\n",argv[2]);
+		fprintf(stderr, "server root: %d\n", argv[2]);
 		perror("couldn't change directory to server root");
 		return -1;
 	}
@@ -208,7 +211,6 @@ int main(int argc, char **argv) {
 
 	init(port);
 	accept_connection();
-
 
 	struct timeval time_start, time_end;
 	int j, i;
