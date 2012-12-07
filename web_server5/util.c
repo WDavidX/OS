@@ -125,9 +125,9 @@ int get_request(int fd, char *filename) {
 		perror("get_reqeust fails to read.");
 		return -1;
 	} else {
-		//	fprintf(stderr, "%d bytes read from fd %d\n", nbyte, fd);
+		fprintf(stderr, "\nNew request: %d bytes read from fd %d\n", nbyte, fd);
 	}
-//	fprintf(stderr, "\n%s", buf);
+	fprintf(stderr, "%s\n", buf);
 
 	char **lines;
 	makeargv(buf, "\n", &lines);
@@ -148,6 +148,8 @@ int get_request(int fd, char *filename) {
 				http_tokens[0], nhttp);
 		return -1;
 	}
+//	fprintf(stderr, "Http token 1: %s \ token 2: %s", http_tokens[0],
+//			http_tokens[1]);
 
 	char **version_tokens;
 	int nversion = makeargv(http_tokens[1], ".", &version_tokens);
@@ -157,13 +159,30 @@ int get_request(int fd, char *filename) {
 		return -1;
 	}
 
-//	int ct;
-//	for (ct = 0;ct<nversion;ct++){
-//		if (!isdigit(version_tokens[ct]))
-//			fprintf(stderr, "Bad format, expecting a decimal number: %s/   %d\n"
-//					, http_tokens[1],nversion);
-//			return -1;
-//	}
+	int ct;
+//	fprintf(stderr, "Version %s\n", http_tokens[1]);
+
+	int decimalshown = 0;
+	for (ct = 0; ct < strlen(http_tokens[1]); ++ct) {
+		if (http_tokens[1][ct]=='\0'||http_tokens[1][ct]==13 ) break;
+		if (http_tokens[1][ct] == '.') {
+			if (decimalshown == 0) {
+				decimalshown = 1;
+				continue;
+			} else {
+				fprintf(stderr, "A. decimal number is expected %s\n",
+						http_tokens[1]);
+				return -1;
+			}
+		}
+//		fprintf(stderr,"%c %d %d %d\n",http_tokens[1][ct],'0',http_tokens[1][ct],'9');
+		if (http_tokens[1][ct]>'9' || http_tokens[1][ct]<'0'){
+			fprintf(stderr, "A decimal number is expected %s\n",
+					http_tokens[1]);
+			return -1;
+		}
+
+}
 
 	if (!strcmp(line_tokens[1], "..") || !strcmp(line_tokens[1], "//")) {
 		fprintf(stderr, "Security violation for the file name: %s\n",
@@ -207,6 +226,10 @@ int return_result(int fd, char *content_type, char *buf, int numbytes) {
 	fprintf(stderr, "Return result to client, %d bytes\n", numbytes);
 
 	FILE *stream = fdopen(fd, "w");
+	if (stream == NULL) {
+		fprintf(stderr, "Unable to open fd %d. %s", fd, strerror(errno));
+		return -1;
+	}
 	fprintf(stream,
 			"HTTP/1.1 200 OK\nContent-Type: %s\nContent-Length: %d\nConnection: Close\n\n",
 			content_type, numbytes);
@@ -230,15 +253,22 @@ int return_error(int fd, char *buf) {
 // send back the error message as a piece of text.
 // then close the connection
 
-	char httpmsg[MAX_HTTP_OUTGOING_HEADER_SIZE];
-	int nheader_byte =
-			sprintf(httpmsg,
-					"HTTP/1.0 404 Not Found\nContent-type: text/plain\nContent-Length: %d\nConnection: Close\n\nError-message: %s\n\0",
-					-1, buf);
+//	char httpmsg[MAX_HTTP_OUTGOING_HEADER_SIZE];
+//	int nheader_byte =
+//			sprintf(httpmsg,
+//					"HTTP/1.0 404 Not Found\nContent-type: text/plain\nContent-Length: %d\nConnection: Close\n\nError-message: %s\n",
+//					-1, buf);
 //	fprintf(stderr,"%s",httpmsg);
-	fprintf(stderr, "Return error to client, % bytes\n", strlen(nheader_byte));
+//	fprintf(stderr, "Return error to client, %d bytes\n", nheader_byte);
 	FILE *stream = fdopen(fd, "w");
-	fprintf(stream, "%s", httpmsg);
+	if (stream == NULL) {
+		fprintf(stderr, "Unable to open fd %d. %s", fd, strerror(errno));
+		return -1;
+	}
+	fprintf(stream,
+			"HTTP/1.0 404 Not Found\nContent-type: text/plain\nContent-Length: %d\nConnection: Close\n\nError-message: %s\n",
+			-1, buf);
+//	fprintf(stream, "%s", httpmsg);
 	fclose(stream);
 	/* A 404 error might look like this string, where %d is the content length:
 	 * "HTTP/1.0 404 Not Found\nContent-Length: %d\nConnection: Close\n\n"

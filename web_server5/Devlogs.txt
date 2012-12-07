@@ -1,0 +1,6 @@
+1 syntax check of the request how to check http version?
+2 any way more efficient? or get a http parser online?
+3 a log of debug info, need to delete the mall before submission
+4 first 2~3 reqeust night get dropped.. why?
+
+11 no persistent connection

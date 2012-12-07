@@ -54,14 +54,12 @@ void * dispatch(void *arg) {
 		}
 
 		if (get_request(fd, mybuf) != 0) {
-//			 printf("Bad request, thread id=%d\n",id);
+			// printf("Bad request, thread id=%d\n",id);
 			continue;// back to top of the loop!
 		}
-//		 printf("Dispatch %d got request: %s\n",id,mybuf);
+		// printf("Dispatch %d got request: %s\n",id,mybuf);
 		reqptr = (char *) malloc(strlen(mybuf) + 1);
 		strcpy(reqptr, mybuf);
-		reqptr[strlen(mybuf)] = '\0';
-//		fprintf(stderr,"=====>Get the filename %s \t mybuf %s\n",reqptr,mybuf);
 
 		// put request in queue
 		pthread_mutex_lock(&req_queue_mutex);
@@ -117,10 +115,11 @@ void * worker(void *arg) {
 		if (strcmp(mybuf, "/") == 0)
 			strcpy(mybuf, "/index.html");
 
-		fprintf(stderr, "Opening file %s\n", mybuf);
-		// increment global timestamp
+		// increment global timestamp]
+
 		int filefd;
 		if ((filefd = open(mybuf + 1, O_RDONLY)) == -1) {
+			fprintf(stderr, "File not found: %s\n", mybuf);
 			return_error(fd, "File not found.");
 			pthread_mutex_lock(&log_mutex);
 			fprintf(logfile, "[%d][%d][%d][%s][%s]\n", id, myreqnum, fd, mybuf,
@@ -128,6 +127,8 @@ void * worker(void *arg) {
 			fflush(logfile);
 			pthread_mutex_unlock(&log_mutex);
 			continue; // next request => top of while loop
+		} else {
+		      fprintf(stderr,"Open file %s\n",mybuf);
 		}
 
 		struct stat st;
@@ -165,10 +166,14 @@ void * worker(void *arg) {
 }
 
 int main(int argc, char **argv) {
-	printf("CSci 4061 Lab 5 begins\n");
 
 	pthread_t dispatch_threads[MAX_THREADS];
 	pthread_t worker_threads[MAX_THREADS];
+
+	int ii;
+	for (ii=0;ii<argc;ii++){
+		printf("%d: %s\n",ii,argv[ii]);
+	}
 
 	logfile = fopen("webserver_log", "w");
 
@@ -177,13 +182,7 @@ int main(int argc, char **argv) {
 		return -1;
 	}
 
-	int ct;
-	for (ct = 0; ct < 6; ct++) {
-		fprintf(stderr, "%d: %s\n", ct, argv[ct]);
-	}
-
 	if (chdir(argv[2]) != 0) {
-		fprintf(stderr, "server root: %d\n", argv[2]);
 		perror("couldn't change directory to server root");
 		return -1;
 	}
@@ -192,6 +191,8 @@ int main(int argc, char **argv) {
 	int num_dispatch = atoi(argv[3]);
 	int num_worker = atoi(argv[4]);
 	qlen = atoi(argv[5]);
+
+	init(port);
 
 	if (num_dispatch > MAX_THREADS || num_dispatch < 1) {
 		fprintf(stderr, "Invalid number of dispatch threads.\n");
@@ -205,12 +206,8 @@ int main(int argc, char **argv) {
 		fprintf(stderr, "Invalid qlen size.\n");
 		return -2;
 	}
-
 	printf("Starting server on port %d: %d disp, %d work\n", port, num_dispatch,
 			num_worker);
-
-	init(port);
-	accept_connection();
 
 	struct timeval time_start, time_end;
 	int j, i;
@@ -246,7 +243,6 @@ int main(int argc, char **argv) {
 	}
 
 	fclose(logfile);
-
 	printf("all threads have exited, main thread exiting...\n");
 
 	return 0;
