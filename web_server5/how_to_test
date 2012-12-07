@@ -1,0 +1,37 @@
+RUNNING THE WEB SERVER
+============================================================
+Extract "testing.tar" and use it as your webserver root
+directory. Run your webserver using the following command
+
+./web_server <port> <path_to_testing>/testing <num_dispatch> <num_worker> <queue_len>
+
+For example, to run the web server at port 9000, with root directory "/home/student/joe/testing" with 100 dispatch and worker threads,
+queue length 100 run the following command
+
+./web_server 9000 /home/student/joe/testing 100 100 100
+
+========== Accessing your server from the terminal =====
+
+Open another terminal and issue the following command,
+
+wget -i <path-to-urls>/urls -O results 
+
+In our case we should run
+wget -i /home/student/joe/testing/urls -O myres
+
+The above command will ask wget to fetch all the URLs listed
+on the file named "urls" that you downloaded from the assignment page.
+
+========== Accessing your server from a browser =====
+
+Launch the browser of your choice, such as Firefox, and enter the url:
+
+htt://servername:port/file/path/file.ext
+
+where 'servername' the name of the server, port is the port you used when launching the 
+web server, and the /file/path/.... is a file within your root directory.
+
+For example, I would enter:
+
+http://localhost:9000/text/html/0.html
+
