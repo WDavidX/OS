@@ -1,6 +1,7 @@
 #ifndef _UTIL_H
 #define _UTIL_H
 
+#define MAX_BUF_SIZE 1000
 
 /**********************************************
  * init
@@ -79,7 +80,7 @@ int return_result(int fd, char *content_type, char *buf, int numbytes);
 ************************************************/
 int return_error(int fd, char *buf);
 
-
+int makeargv(const char *s, const char *delimiters, char ***argvp);
 
 
 #endif /* _UTIL_H */
