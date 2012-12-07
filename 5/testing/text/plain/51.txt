@@ -1,6 +1,0 @@
-User-agent: *
-Disallow: /wiki/
-Disallow: /ixpdir/
-Disallow: /resources/data/
-Disallow: /resources/papers/
-Disallow: /resources/discussion/
