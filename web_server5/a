@@ -1,3 +1,5 @@
 #!/bin/bash
 
-./web_server 2999 "/home/xuxxx625/Desktop/CSCI 4061 Intro Operation System/project source/OS/web_server5/testing"  5 5 5
+make clean
+make
+./web_server 9000 "/home/xuxxx625/Desktop/CSCI 4061 Intro Operation System/project source/OS/web_server5/testing"  100 100 100
